@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "MLtools"
+  site-url: "https://bthek1.github.io/MLtools"
+  description: "Usefull libraries for Machine Learning"
+  repo-branch: main
+  repo-url: "https://github.com/bthek1/MLtools"
