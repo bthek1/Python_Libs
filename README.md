@@ -11,14 +11,4 @@ documentation.
 pip install MLtools
 ```
 
-## How to use
-
-Fill me in please! Don’t forget code examples:
-
-``` python
-1+1
-```
-
-    2
-
-To do: - pandas - matplot - numpy - seaborn - tensor - ploty
+To do: - pandas - matplot - numpy - tensor - ploty/ seaborn
