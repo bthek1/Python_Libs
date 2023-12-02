@@ -4,7 +4,7 @@ project:
 format:
   html:
     theme:
-      light: lux
+      light: flatly
       dark: darkly
     css: styles.css
     toc: true
