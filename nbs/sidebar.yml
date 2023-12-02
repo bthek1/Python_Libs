@@ -5,4 +5,5 @@ website:
       - 04_pivottablesjs.ipynb
       - 05_Pytube.ipynb
       - 06_Mito.ipynb
+      - 07_Altair.ipynb
       - pivottablejs.html
