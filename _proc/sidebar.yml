@@ -1,0 +1,8 @@
+website:
+  sidebar:
+    contents:
+      - index.ipynb
+      - 04_pivottablesjs.ipynb
+      - 05_Pytube.ipynb
+      - 06_Mito.ipynb
+      - pivottablejs.html
