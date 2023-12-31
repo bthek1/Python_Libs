@@ -12,5 +12,6 @@ website:
       - 07_Altair.ipynb
       - 08_Tqdm.ipynb
       - 09_ipywidget.ipynb
+      - 10_Tmux.ipynb
       - export.html
       - pivottablejs.html

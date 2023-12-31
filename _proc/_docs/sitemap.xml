@@ -1,47 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://bthek1.github.io/MLtools/matplotlib.html</loc>
-    <lastmod>2023-12-27T14:45:21.716Z</lastmod>
-  </url>
-  <url>
     <loc>https://bthek1.github.io/MLtools/scipy.html</loc>
-    <lastmod>2023-12-27T14:45:21.146Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bthek1.github.io/MLtools/pivottablesjs.html</loc>
-    <lastmod>2023-12-27T14:45:19.686Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bthek1.github.io/MLtools/numpy.html</loc>
-    <lastmod>2023-12-27T14:45:18.776Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bthek1.github.io/MLtools/pandas.html</loc>
-    <lastmod>2023-12-27T14:45:17.726Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bthek1.github.io/MLtools/pytube.html</loc>
-    <lastmod>2023-12-27T14:45:15.646Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bthek1.github.io/MLtools/index.html</loc>
-    <lastmod>2023-12-27T14:45:16.086Z</lastmod>
+    <lastmod>2023-12-31T15:48:00.602Z</lastmod>
   </url>
   <url>
     <loc>https://bthek1.github.io/MLtools/ipywidget.html</loc>
-    <lastmod>2023-12-27T14:48:22.006Z</lastmod>
+    <lastmod>2023-12-31T15:47:59.462Z</lastmod>
   </url>
   <url>
-    <loc>https://bthek1.github.io/MLtools/mito.html</loc>
-    <lastmod>2023-12-27T14:45:19.326Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bthek1.github.io/MLtools/altair.html</loc>
-    <lastmod>2023-12-27T14:45:20.886Z</lastmod>
+    <loc>https://bthek1.github.io/MLtools/pytube.html</loc>
+    <lastmod>2023-12-31T15:47:57.262Z</lastmod>
   </url>
   <url>
     <loc>https://bthek1.github.io/MLtools/tqdm.html</loc>
-    <lastmod>2023-12-27T14:45:21.466Z</lastmod>
+    <lastmod>2023-12-31T15:47:56.602Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bthek1.github.io/MLtools/matplotlib.html</loc>
+    <lastmod>2023-12-31T15:47:56.042Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bthek1.github.io/MLtools/mito.html</loc>
+    <lastmod>2023-12-31T15:47:55.512Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bthek1.github.io/MLtools/pivottablesjs.html</loc>
+    <lastmod>2023-12-31T15:47:54.952Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bthek1.github.io/MLtools/tmux.html</loc>
+    <lastmod>2023-12-31T16:24:04.122Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bthek1.github.io/MLtools/numpy.html</loc>
+    <lastmod>2023-12-31T15:47:56.312Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bthek1.github.io/MLtools/index.html</loc>
+    <lastmod>2023-12-31T15:47:57.002Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bthek1.github.io/MLtools/pandas.html</loc>
+    <lastmod>2023-12-31T15:47:58.702Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bthek1.github.io/MLtools/altair.html</loc>
+    <lastmod>2023-12-31T16:26:16.602Z</lastmod>
   </url>
 </urlset>
