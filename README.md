@@ -11,4 +11,10 @@ documentation.
 pip install MLtools
 ```
 
-To do: - pandas - matplot - numpy - tensor - ploty/ seaborn
+To do:
+
+- matplot
+- numpy
+- tensor
+- ploty/ seaborn
+- class, decorator, partial, args
