@@ -13,5 +13,6 @@ website:
       - 08_Tqdm.ipynb
       - 09_ipywidget.ipynb
       - 10_Tmux.ipynb
+      - 11_Python Class.ipynb
       - export.html
       - pivottablejs.html

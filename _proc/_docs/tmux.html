@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Usefull libraries for Machine Learning">
+<meta name="description" content="Tmux">
 
-<title>MLtools</title>
+<title>MLtools - Tmux</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,7 +65,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./matplotlib.html" rel="next">
+<link href="./python class.html" rel="next">
+<link href="./ipywidget.html" rel="prev">
 <link href="./bird.jpg" rel="icon" type="image/jpeg">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -101,11 +102,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="MLtools">
-<meta property="og:description" content="Usefull libraries for Machine Learning">
+<meta property="og:title" content="MLtools - Tmux">
+<meta property="og:description" content="Tmux">
 <meta property="og:site-name" content="MLtools">
-<meta name="twitter:title" content="MLtools">
-<meta name="twitter:description" content="Usefull libraries for Machine Learning">
+<meta name="twitter:title" content="MLtools - Tmux">
+<meta name="twitter:description" content="Tmux">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -235,7 +236,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">MLtools</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./tmux.html">Tmux</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
     </div>
@@ -249,7 +250,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">MLtools</span></a>
   </div>
 </li>
@@ -315,7 +316,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./tmux.html" class="sidebar-item-text sidebar-link">
+  <a href="./tmux.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Tmux</span></a>
   </div>
 </li>
@@ -335,21 +336,57 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#install" id="toc-install" class="nav-link active" data-scroll-target="#install">Install</a></li>
+  <li><a href="#session" id="toc-session" class="nav-link active" data-scroll-target="#session">Session</a>
+  <ul class="collapse">
+  <li><a href="#create-a-new-session" id="toc-create-a-new-session" class="nav-link" data-scroll-target="#create-a-new-session">Create a new session</a></li>
+  <li><a href="#list-session" id="toc-list-session" class="nav-link" data-scroll-target="#list-session">List Session</a></li>
+  <li><a href="#attach-session" id="toc-attach-session" class="nav-link" data-scroll-target="#attach-session">Attach Session</a></li>
+  <li><a href="#kill-session" id="toc-kill-session" class="nav-link" data-scroll-target="#kill-session">Kill Session</a></li>
+  <li><a href="#rename-session" id="toc-rename-session" class="nav-link" data-scroll-target="#rename-session">Rename session</a></li>
+  <li><a href="#detach-from-session" id="toc-detach-from-session" class="nav-link" data-scroll-target="#detach-from-session">Detach from session</a></li>
+  <li><a href="#session-and-window-preview" id="toc-session-and-window-preview" class="nav-link" data-scroll-target="#session-and-window-preview">Session and Window Preview</a></li>
+  <li><a href="#move-to-previous-session" id="toc-move-to-previous-session" class="nav-link" data-scroll-target="#move-to-previous-session">Move to previous session</a></li>
+  <li><a href="#move-to-next-session" id="toc-move-to-next-session" class="nav-link" data-scroll-target="#move-to-next-session">Move to next session</a></li>
+  </ul></li>
+  <li><a href="#windows" id="toc-windows" class="nav-link" data-scroll-target="#windows">Windows</a>
+  <ul class="collapse">
+  <li><a href="#create-session-with-named-window" id="toc-create-session-with-named-window" class="nav-link" data-scroll-target="#create-session-with-named-window">Create session with named window</a></li>
+  <li><a href="#create-new-window" id="toc-create-new-window" class="nav-link" data-scroll-target="#create-new-window">Create new window</a></li>
+  <li><a href="#rename-current-window" id="toc-rename-current-window" class="nav-link" data-scroll-target="#rename-current-window">Rename current window</a></li>
+  <li><a href="#close-current-window" id="toc-close-current-window" class="nav-link" data-scroll-target="#close-current-window">Close current window</a></li>
+  <li><a href="#list-window" id="toc-list-window" class="nav-link" data-scroll-target="#list-window">List window</a></li>
+  <li><a href="#previous-window" id="toc-previous-window" class="nav-link" data-scroll-target="#previous-window">Previous window</a></li>
+  <li><a href="#next-window" id="toc-next-window" class="nav-link" data-scroll-target="#next-window">Next window</a></li>
+  <li><a href="#switch-to-window-by-number" id="toc-switch-to-window-by-number" class="nav-link" data-scroll-target="#switch-to-window-by-number">Switch to window by number</a></li>
+  </ul></li>
+  <li><a href="#panes" id="toc-panes" class="nav-link" data-scroll-target="#panes">Panes</a>
+  <ul class="collapse">
+  <li><a href="#split-window-vertically" id="toc-split-window-vertically" class="nav-link" data-scroll-target="#split-window-vertically">Split window vertically</a></li>
+  <li><a href="#split-window-horizontally" id="toc-split-window-horizontally" class="nav-link" data-scroll-target="#split-window-horizontally">Split window horizontally</a></li>
+  <li><a href="#navigate-panes" id="toc-navigate-panes" class="nav-link" data-scroll-target="#navigate-panes">Navigate panes</a></li>
+  <li><a href="#close-current-pane" id="toc-close-current-pane" class="nav-link" data-scroll-target="#close-current-pane">Close current pane</a></li>
+  <li><a href="#move-the-current-pane-left" id="toc-move-the-current-pane-left" class="nav-link" data-scroll-target="#move-the-current-pane-left">Move the current pane left</a></li>
+  <li><a href="#move-the-current-pane-right" id="toc-move-the-current-pane-right" class="nav-link" data-scroll-target="#move-the-current-pane-right">Move the current pane right</a></li>
+  <li><a href="#switch-to-next-pane" id="toc-switch-to-next-pane" class="nav-link" data-scroll-target="#switch-to-next-pane">Switch to next pane</a></li>
+  <li><a href="#show-pane-numbers" id="toc-show-pane-numbers" class="nav-link" data-scroll-target="#show-pane-numbers">Show pane numbers</a></li>
+  <li><a href="#convert-pane-to-window" id="toc-convert-pane-to-window" class="nav-link" data-scroll-target="#convert-pane-to-window">Convert pane to window</a></li>
+  <li><a href="#toggle-pane-zoom" id="toc-toggle-pane-zoom" class="nav-link" data-scroll-target="#toggle-pane-zoom">Toggle pane zoom</a></li>
+  <li><a href="#resize-pane" id="toc-resize-pane" class="nav-link" data-scroll-target="#resize-pane">Resize pane</a></li>
+  </ul></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.dev/bthek1/MLtools/blob/main/index.ipynb" class="toc-action">Edit this page</a></p><p><a href="https://github.com/bthek1/MLtools/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.dev/bthek1/MLtools/blob/main/10_Tmux.ipynb" class="toc-action">Edit this page</a></p><p><a href="https://github.com/bthek1/MLtools/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">MLtools</h1>
+<h1 class="title">Tmux</h1>
 </div>
 
 <div>
   <div class="description">
-    Usefull libraries for Machine Learning
+    Tmux
   </div>
 </div>
 
@@ -365,20 +402,134 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 <!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
-<p>This file will become your README and also the index of your documentation.</p>
-<section id="install" class="level2">
-<h2 class="anchored" data-anchor-id="install">Install</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install MLtools</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>To do:</p>
-<ul>
-<li>matplot</li>
-<li>numpy</li>
-<li>tensor</li>
-<li>ploty/ seaborn</li>
-<li>class, decorator, partial, args</li>
-</ul>
+<section id="session" class="level2">
+<h2 class="anchored" data-anchor-id="session">Session</h2>
+<section id="create-a-new-session" class="level3">
+<h3 class="anchored" data-anchor-id="create-a-new-session">Create a new session</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tmux</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tmux</span> new</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tmux</span> new <span class="at">-s</span> <span class="op">&lt;</span>session name<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="list-session" class="level3">
+<h3 class="anchored" data-anchor-id="list-session">List Session</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tmux</span> ls</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tmux</span> list-sessions</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tmux</span> new <span class="at">-s</span> <span class="op">&lt;</span>session name<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="attach-session" class="level3">
+<h3 class="anchored" data-anchor-id="attach-session">Attach Session</h3>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tmux</span> a</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tmux</span> at</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tmux</span> a <span class="at">-t</span> <span class="op">&lt;</span>session name<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="kill-session" class="level3">
+<h3 class="anchored" data-anchor-id="kill-session">Kill Session</h3>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tmux</span> kill-session <span class="at">-t</span> <span class="op">&lt;</span>session name<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="rename-session" class="level3">
+<h3 class="anchored" data-anchor-id="rename-session">Rename session</h3>
+<p><code>Ctrl</code> + <code>b</code> <code>$</code></p>
+</section>
+<section id="detach-from-session" class="level3">
+<h3 class="anchored" data-anchor-id="detach-from-session">Detach from session</h3>
+<p><code>Ctrl</code> + <code>b</code> <code>d</code></p>
+</section>
+<section id="session-and-window-preview" class="level3">
+<h3 class="anchored" data-anchor-id="session-and-window-preview">Session and Window Preview</h3>
+<p><code>Ctrl</code> + <code>b</code> <code>w</code></p>
+</section>
+<section id="move-to-previous-session" class="level3">
+<h3 class="anchored" data-anchor-id="move-to-previous-session">Move to previous session</h3>
+<p><code>Ctrl</code> + <code>b</code> <code>(</code></p>
+</section>
+<section id="move-to-next-session" class="level3">
+<h3 class="anchored" data-anchor-id="move-to-next-session">Move to next session</h3>
+<p><code>Ctrl</code> + <code>b</code> <code>)</code></p>
+</section>
+</section>
+<section id="windows" class="level2">
+<h2 class="anchored" data-anchor-id="windows">Windows</h2>
+<section id="create-session-with-named-window" class="level3">
+<h3 class="anchored" data-anchor-id="create-session-with-named-window">Create session with named window</h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tmux</span> new <span class="at">-s</span> mysession <span class="at">-n</span> mywindow</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="create-new-window" class="level3">
+<h3 class="anchored" data-anchor-id="create-new-window">Create new window</h3>
+<p><code>Ctrl</code> + <code>b</code> <code>c</code></p>
+</section>
+<section id="rename-current-window" class="level3">
+<h3 class="anchored" data-anchor-id="rename-current-window">Rename current window</h3>
+<p><code>Ctrl</code> + <code>b</code> <code>,</code></p>
+</section>
+<section id="close-current-window" class="level3">
+<h3 class="anchored" data-anchor-id="close-current-window">Close current window</h3>
+<p><code>Ctrl</code> + <code>b</code> <code>&amp;</code></p>
+</section>
+<section id="list-window" class="level3">
+<h3 class="anchored" data-anchor-id="list-window">List window</h3>
+<p><code>Ctrl</code> + <code>b</code> <code>w</code></p>
+</section>
+<section id="previous-window" class="level3">
+<h3 class="anchored" data-anchor-id="previous-window">Previous window</h3>
+<p><code>Ctrl</code> + <code>b</code> <code>p</code></p>
+</section>
+<section id="next-window" class="level3">
+<h3 class="anchored" data-anchor-id="next-window">Next window</h3>
+<p><code>Ctrl</code> + <code>b</code> <code>n</code></p>
+</section>
+<section id="switch-to-window-by-number" class="level3">
+<h3 class="anchored" data-anchor-id="switch-to-window-by-number">Switch to window by number</h3>
+<p><code>Ctrl</code> + <code>b</code> <code>0...9</code></p>
+</section>
+</section>
+<section id="panes" class="level2">
+<h2 class="anchored" data-anchor-id="panes">Panes</h2>
+<section id="split-window-vertically" class="level3">
+<h3 class="anchored" data-anchor-id="split-window-vertically">Split window vertically</h3>
+<p><code>Ctrl</code> + <code>b</code> <code>%</code></p>
+</section>
+<section id="split-window-horizontally" class="level3">
+<h3 class="anchored" data-anchor-id="split-window-horizontally">Split window horizontally</h3>
+<p><code>Ctrl</code> + <code>b</code> <code>"</code></p>
+</section>
+<section id="navigate-panes" class="level3">
+<h3 class="anchored" data-anchor-id="navigate-panes">Navigate panes</h3>
+<p><code>Ctrl</code> + <code>b</code> <code>up, down, right, left</code></p>
+</section>
+<section id="close-current-pane" class="level3">
+<h3 class="anchored" data-anchor-id="close-current-pane">Close current pane</h3>
+<p><code>Ctrl</code> + <code>b</code> <code>x</code></p>
+</section>
+<section id="move-the-current-pane-left" class="level3">
+<h3 class="anchored" data-anchor-id="move-the-current-pane-left">Move the current pane left</h3>
+<p><code>Ctrl</code> + <code>b</code> <code>{</code></p>
+</section>
+<section id="move-the-current-pane-right" class="level3">
+<h3 class="anchored" data-anchor-id="move-the-current-pane-right">Move the current pane right</h3>
+<p><code>Ctrl</code> + <code>b</code> <code>}</code></p>
+</section>
+<section id="switch-to-next-pane" class="level3">
+<h3 class="anchored" data-anchor-id="switch-to-next-pane">Switch to next pane</h3>
+<p><code>Ctrl</code> + <code>b</code> <code>o</code></p>
+</section>
+<section id="show-pane-numbers" class="level3">
+<h3 class="anchored" data-anchor-id="show-pane-numbers">Show pane numbers</h3>
+<p><code>Ctrl</code> + <code>b</code> <code>q</code> <code>0...9</code></p>
+</section>
+<section id="convert-pane-to-window" class="level3">
+<h3 class="anchored" data-anchor-id="convert-pane-to-window">Convert pane to window</h3>
+<p><code>Ctrl</code> + <code>b</code> <code>!</code></p>
+</section>
+<section id="toggle-pane-zoom" class="level3">
+<h3 class="anchored" data-anchor-id="toggle-pane-zoom">Toggle pane zoom</h3>
+<p><code>Ctrl</code> + <code>b</code> <code>z</code></p>
+</section>
+<section id="resize-pane" class="level3">
+<h3 class="anchored" data-anchor-id="resize-pane">Resize pane</h3>
+<p><code>Ctrl</code> + <code>b</code> + <code>up, down, right, left</code></p>
 
 
+</section>
 </section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
@@ -734,10 +885,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="./ipywidget.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Ipywidget</span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./matplotlib.html" class="pagination-link">
-        <span class="nav-page-text">Matplotlib</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./python class.html" class="pagination-link">
+        <span class="nav-page-text">Python Class</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
