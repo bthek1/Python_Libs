@@ -24,7 +24,7 @@ deployments:
   version: null
   tags: []
   description: Sleepy flow - sleeps the provided amount of time (in seconds).
-  entrypoint: nbs/prefect_deployment_serve.py:slow_flow
+  entrypoint: nbs/prefect_deployment_serve.py
   parameters: {}
   work_pool:
     name: test-pool
