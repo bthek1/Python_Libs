@@ -1,0 +1,37 @@
+# Welcome to your prefect.yaml file! You can use this file for storing and managing
+# configuration for deploying your flows. We recommend committing this file to source
+# control along with your flow code.
+
+# Generic metadata about this project
+name: nbs
+prefect-version: 2.16.8
+
+# build section allows you to manage and build docker images
+build: null
+
+# push section allows you to manage if and how this project is uploaded to remote locations
+push: null
+
+# pull section allows you to provide instructions for cloning this project in remote locations
+pull:
+- prefect.deployments.steps.git_clone:
+    repository: git@github.com:bthek1/MLtools.git
+    branch: main
+
+# the deployments section allows you to provide configuration for deploying flows
+deployments:
+- name: prefect_deployment
+  version: null
+  tags: []
+  description: Sleepy flow - sleeps the provided amount of time (in seconds).
+  entrypoint: prefect_deployment_serve.py:slow_flow
+  parameters: {}
+  work_pool:
+    name: test-pool
+    work_queue_name: null
+    job_variables: {}
+  schedules:
+  - interval: 30.0
+    anchor_date: '2024-04-03T13:38:23.549390+00:00'
+    timezone: UTC
+    active: true

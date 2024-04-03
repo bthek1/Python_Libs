@@ -1,28 +1,18 @@
-class Deployment:
-    """
-    Structure of the schema defining a deployment
-    """
+from prefect import flow
 
-    # required defining data
-    name: str 
-    flow_id: UUID
-    entrypoint: str
-    path: str = None
 
-    # workflow scheduling and parametrization
-    parameters: dict = None
-    parameter_openapi_schema: dict = None
-    schedules: list[Schedule] = None
-    paused: bool = False
-    trigger: Trigger = None
+@flow(log_prints=True)
+def hello_world(name: str = "world", goodbye: bool = False):
+    print(f"Hello {name} from Prefect! 🤗")
 
-    # metadata for bookkeeping
-    version: str = None
-    description: str = None
-    tags: list = None
+    if goodbye:
+        print(f"Goodbye {name}!")
 
-    # worker-specific fields
-    work_pool_name: str = None
-    work_queue_name: str = None
-    infra_overrides: dict = None
-    pull_steps: dict = None
+
+if __name__ == "__main__":
+    # creates a deployment and stays running to monitor for work instructions generated on the server
+
+    hello_world.serve(name="my-first-deployment",
+                      tags=["onboarding"],
+                      parameters={"goodbye": True},
+                      interval=60)
