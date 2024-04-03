@@ -12,6 +12,7 @@ def slow_flow(sleep: int = 60):
 @flow()
 def fast_flow():
     "Fastest flow this side of the Mississippi."
+    create_link_artifact(key="create-link-artifact", link="my_flow", description="## my_flow")
     return
 
 
