@@ -1,35 +1,3 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://bthek1.github.io/MLtools/numpy.html</loc>
-    <lastmod>2024-02-07T16:09:29.903Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bthek1.github.io/MLtools/tmux.html</loc>
-    <lastmod>2024-02-07T16:09:15.268Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bthek1.github.io/MLtools/python class.html</loc>
-    <lastmod>2024-02-07T16:09:02.828Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bthek1.github.io/MLtools/matplotlib.html</loc>
-    <lastmod>2024-02-07T16:08:59.112Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bthek1.github.io/MLtools/pivottablesjs.html</loc>
-    <lastmod>2024-02-07T16:09:01.128Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bthek1.github.io/MLtools/pandas.html</loc>
-    <lastmod>2024-02-07T16:09:11.692Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bthek1.github.io/MLtools/mito.html</loc>
-    <lastmod>2024-02-07T16:09:19.232Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bthek1.github.io/MLtools/scipy.html</loc>
-    <lastmod>2024-02-07T16:10:07.007Z</lastmod>
-  </url>
 </urlset>

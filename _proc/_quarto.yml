@@ -11,8 +11,8 @@ format:
     
 website:
   title: "ML Tools"
-  image: "bird.jpg"
-  favicon: "bird.jpg"
+  image: "Logo.svg"
+  favicon: "favi.svg"
   reader-mode: true
   back-to-top-navigation: true
   page-navigation: true
@@ -25,7 +25,7 @@ website:
 
   navbar:
     background: dark
-    logo: "bird.jpg"
+    logo: "Logo.svg"
     logo-alt: "Quarto logo."
     collapse-below: lg
     title: false
@@ -36,8 +36,10 @@ website:
         menu:
         - text: "Fast AI Setup"
           href: https://bthek1.github.io/FastAISetup/
-        - text: " Fast AI course"
+        - text: "Fast AI course"
           href: https://bthek1.github.io/fastAIcourse/
+        - text: "Deep Learning"
+          href: https://bthek1.github.io/DeepLearning
           
       - text: "ML"
         menu:
