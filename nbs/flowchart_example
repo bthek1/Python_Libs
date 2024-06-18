@@ -1,0 +1,11 @@
+digraph {
+	Start [label=Start color=lightgrey shape=ellipse style=filled]
+	A [label="Action A" shape=box]
+	B [label="Action B" shape=box]
+	C [label="Action C" shape=diamond]
+	End [label=End color=lightgrey shape=ellipse style=filled]
+	Start -> A
+	A -> B
+	B -> C
+	C -> End
+}

@@ -1,0 +1,24 @@
+digraph {
+	graph [compound=true fillcolor="#d62828" fontcolor="#003049" fontname="Helvetica,Arial,sans-serif" penwidth=0 rankdir=LR style="rounded,filled"]
+	node [fillcolor="#fcbf49" fontcolor="#003049" fontname="Helvetica,Arial,sans-serif" penwidth=0 shape=box size="8,5" style="rounded,filled" width=1.5]
+	edge [arrowhead=vee arrowsize=1 color="#003049" fontname="Helvetica,Arial,sans-serif" len=1.00 penwidth=1]
+	subgraph cluster_0 {
+		graph [compound=true fillcolor="#d62828" fontcolor="#003049" fontname="Helvetica,Arial,sans-serif" penwidth=0 rankdir=LR style="rounded,filled"]
+		node [fillcolor="#fcbf49" fontcolor="#003049" fontname="Helvetica,Arial,sans-serif" penwidth=0 shape=box size="8,5" style="rounded,filled" width=1.5]
+		edge [arrowhead=vee arrowsize=1 color="#003049" fontname="Helvetica,Arial,sans-serif" len=1.00 penwidth=1]
+		A [label="Node A"]
+		B [label="Node B"]
+		A -> B
+		label="Subgraph 1"
+	}
+	subgraph cluster_1 {
+		graph [compound=true fillcolor="#d62828" fontcolor="#003049" fontname="Helvetica,Arial,sans-serif" penwidth=0 rankdir=LR style="rounded,filled"]
+		node [fillcolor="#fcbf49" fontcolor="#003049" fontname="Helvetica,Arial,sans-serif" penwidth=0 shape=box size="8,5" style="rounded,filled" width=1.5]
+		edge [arrowhead=vee arrowsize=1 color="#003049" fontname="Helvetica,Arial,sans-serif" len=1.00 penwidth=1]
+		C [label="Node C"]
+		D [label="Node D"]
+		C -> D
+		label="Subgraph 2"
+	}
+	A -> C
+}
