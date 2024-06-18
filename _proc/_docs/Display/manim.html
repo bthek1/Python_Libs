@@ -1,0 +1,1817 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.555">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Manim">
+
+<title>MLtools - Manim</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../Display/bokeh.html" rel="next">
+<link href="../pivottablejs.html" rel="prev">
+<link href="../favi.svg" rel="icon" type="image/svg+xml">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+<meta property="og:title" content="MLtools - Manim">
+<meta property="og:description" content="Manim">
+<meta property="og:image" content="https://bthek1.github.io/MLtools/Display/Logo.svg">
+<meta property="og:site_name" content="MLtools">
+<meta name="twitter:title" content="MLtools - Manim">
+<meta name="twitter:description" content="Manim">
+<meta name="twitter:image" content="https://bthek1.github.io/MLtools/Display/Logo.svg">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../Logo.svg" alt="Quarto logo." class="navbar-logo">
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://bthek1.github.io/B_Blog/"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-ai" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">AI</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-ai">    
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/Computer_Setup/">
+ <span class="dropdown-text">Computer Setup</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/FastAI_course/">
+ <span class="dropdown-text">Fast AI course</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/DL_methods/">
+ <span class="dropdown-text">DL Methods</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-ml" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">ML</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-ml">    
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/ML_methods/">
+ <span class="dropdown-text">ML Methods</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/Python_Libs/">
+ <span class="dropdown-text">Python Libraries</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/TimeSeriesML/">
+ <span class="dropdown-text">Time series</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="https://bthek1.github.io/WEB_doc/"> 
+<span class="menu-text">Web Development</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://bthek1.github.io/nbdevAuto/"> 
+<span class="menu-text">Nbdev Automation</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-help" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Help</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-help">    
+        <li>
+    <a class="dropdown-item" href="https://github.com/bthek1/B_Blog/issues"><i class="bi bi-bug" role="img">
+</i> 
+ <span class="dropdown-text">Report a Bug</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://github.com/bthek1/B_Blog/issues"><i class="bi bi-chat-right-text" role="img">
+</i> 
+ <span class="dropdown-text">Ask a Question</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://github.com/bthek1/B_Blog/issues"><i class="bi bi-question-circle" role="img">
+</i> 
+ <span class="dropdown-text">FAQ</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools tools-wide">
+    <a href="https://github.com/bthek1" title="" class="quarto-navigation-tool px-1" aria-label="Github"><i class="bi bi-github"></i></a>
+    <a href="https://www.linkedin.com/in/benedict-thekkel/" title="" class="quarto-navigation-tool px-1" aria-label="Linkedin"><i class="bi bi-linkedin"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Display/manim.html">Display</a></li><li class="breadcrumb-item"><a href="../Display/manim.html">Manim</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Python Libraries for ML</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../matplotlib.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Matplotlib</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../numpy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Numpy</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../scipy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Scipy</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pandas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Pandas</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tqdm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">tqdm</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ipywidget.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ipywidget</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tmux.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tmux</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Display</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Display/manim.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Manim</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Display/bokeh.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bokeh</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Display/graphviz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Graphviz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Display/mermaid.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mermaid</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Display/altair.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Altair</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Other</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Other/pivottablesjs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Pivot Tables js</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Other/pytube.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Pytube</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Other/mito.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mito</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Other/latexify.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Latexify examples</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Python</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Python/python_class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Python Class</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Python/python_args.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Python args</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Python/python_logging.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Python Logging</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Python/python_multiprocessing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Python Multiprocessing</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#quickstart" id="toc-quickstart" class="nav-link active" data-scroll-target="#quickstart">Quickstart</a></li>
+  <li><a href="#animating-a-circle" id="toc-animating-a-circle" class="nav-link" data-scroll-target="#animating-a-circle">Animating a circle</a></li>
+  <li><a href="#positioning-mobjects" id="toc-positioning-mobjects" class="nav-link" data-scroll-target="#positioning-mobjects">Positioning <code>Mobject</code>s</a></li>
+  <li><a href="#using-.animate-syntax-to-animate-methodsm2" id="toc-using-.animate-syntax-to-animate-methodsm2" class="nav-link" data-scroll-target="#using-.animate-syntax-to-animate-methodsm2">Using .animate syntax to animate methodsm2</a></li>
+  <li><a href="#transform-vs-replacementtransform" id="toc-transform-vs-replacementtransform" class="nav-link" data-scroll-target="#transform-vs-replacementtransform"><code>Transform</code> vs <code>ReplacementTransform</code></a></li>
+  <li><a href="#advanced" id="toc-advanced" class="nav-link" data-scroll-target="#advanced">Advanced</a>
+  <ul class="collapse">
+  <li><a href="#shapes" id="toc-shapes" class="nav-link" data-scroll-target="#shapes">Shapes</a></li>
+  <li><a href="#mobjectplacement" id="toc-mobjectplacement" class="nav-link" data-scroll-target="#mobjectplacement">MobjectPlacement</a></li>
+  <li><a href="#mobjectstyling" id="toc-mobjectstyling" class="nav-link" data-scroll-target="#mobjectstyling">MobjectStyling</a></li>
+  <li><a href="#animations" id="toc-animations" class="nav-link" data-scroll-target="#animations">Animations</a></li>
+  </ul></li>
+  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">Example</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.dev/bthek1/MLtools/blob/main/Display/70_Manim.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bthek1/MLtools/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Display/manim.html">Display</a></li><li class="breadcrumb-item"><a href="../Display/manim.html">Manim</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Manim</h1>
+</div>
+
+<div>
+  <div class="description">
+    <a href="https://docs.manim.community/en/stable/examples.html">Manim</a>
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<pre><code>pip install manim</code></pre>
+<div id="cell-3" class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>pip <span class="bu">list</span> <span class="op">|</span> grep manim</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>manim                     0.18.1
+Note: you may need to restart the kernel to use updated packages.</code></pre>
+</div>
+</div>
+<section id="quickstart" class="level2">
+<h2 class="anchored" data-anchor-id="quickstart">Quickstart</h2>
+<div id="cell-5" class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> manim <span class="im">import</span> <span class="op">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-6" class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SquareToCircle(Scene):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>   <span class="kw">def</span> construct(<span class="va">self</span>):</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>      square <span class="op">=</span> Square()</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>      circle <span class="op">=</span> Circle()</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;/</span>video<span class="op">&gt;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>      circle.set_fill(PINK, opacity<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>      <span class="va">self</span>.play(Create(square))</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>      <span class="va">self</span>.play(Transform(square, circle))</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>      <span class="va">self</span>.wait()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Manim Community <span style="color: #008000; text-decoration-color: #008000">v0.18.1</span>
+
+</pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>                                                                                                                        </code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<video src="media/jupyter/SquareToCircle@2024-05-01@19-15-55.mp4" controls="" autoplay="" loop="" style="max-width: 60%;">
+      Your browser does not support the <code>video</code> element.
+    </video>
+</div>
+</div>
+<video width="320" height="240" controls="">
+<source src="media/jupyter/SquareToCircle@2024-05-01@19-15-55.mp4" type="video/mp4">
+</video>
+</section>
+<section id="animating-a-circle" class="level2">
+<h2 class="anchored" data-anchor-id="animating-a-circle">Animating a circle</h2>
+<div id="cell-9" class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> CreateCircle(Scene):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> construct(<span class="va">self</span>):</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        circle <span class="op">=</span> Circle()  <span class="co"># create a circle</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        circle.set_fill(PINK, opacity<span class="op">=</span><span class="fl">0.5</span>)  <span class="co"># set the color and transparency</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.play(Create(circle))  <span class="co"># show the circle on screen</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Manim Community <span style="color: #008000; text-decoration-color: #008000">v0.18.1</span>
+
+</pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>                                                                                                                        </code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<video src="media/jupyter/CreateCircle@2024-05-01@19-15-55.mp4" controls="" autoplay="" loop="" style="max-width: 60%;">
+      Your browser does not support the <code>video</code> element.
+    </video>
+</div>
+</div>
+<video width="320" height="240" controls="">
+<source src="media/jupyter/CreateCircle@2024-05-01@19-15-55.mp4" type="video/mp4">
+</video>
+</section>
+<section id="positioning-mobjects" class="level2">
+<h2 class="anchored" data-anchor-id="positioning-mobjects">Positioning <code>Mobject</code>s</h2>
+<div id="cell-12" class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SquareAndCircle(Scene):</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> construct(<span class="va">self</span>):</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>        circle <span class="op">=</span> Circle()  <span class="co"># create a circle</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>        circle.set_fill(PINK, opacity<span class="op">=</span><span class="fl">0.5</span>)  <span class="co"># set the color and transparency</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        square <span class="op">=</span> Square()  <span class="co"># create a square</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        square.set_fill(BLUE, opacity<span class="op">=</span><span class="fl">0.5</span>)  <span class="co"># set the color and transparency</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        square.next_to(circle, RIGHT, buff<span class="op">=</span><span class="fl">0.5</span>)  <span class="co"># set the position</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.play(Create(circle), Create(square))  <span class="co"># show the shapes on screen</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Manim Community <span style="color: #008000; text-decoration-color: #008000">v0.18.1</span>
+
+</pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>                                                                                                                        </code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<video src="media/jupyter/SquareAndCircle@2024-05-01@19-15-55.mp4" controls="" autoplay="" loop="" style="max-width: 60%;">
+      Your browser does not support the <code>video</code> element.
+    </video>
+</div>
+</div>
+</section>
+<section id="using-.animate-syntax-to-animate-methodsm2" class="level2">
+<h2 class="anchored" data-anchor-id="using-.animate-syntax-to-animate-methodsm2">Using .animate syntax to animate methodsm2</h2>
+<div id="cell-14" class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> AnimatedSquareToCircle(Scene):</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> construct(<span class="va">self</span>):</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>        circle <span class="op">=</span> Circle()  <span class="co"># create a circle</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>        square <span class="op">=</span> Square()  <span class="co"># create a square</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.play(Create(square))  <span class="co"># show the square on screen</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.play(square.animate.rotate(PI <span class="op">/</span> <span class="dv">4</span>))  <span class="co"># rotate the square</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.play(Transform(square, circle))  <span class="co"># transform the square into a circle</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.play(</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>            square.animate.set_fill(PINK, opacity<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>        )  <span class="co"># color the circle on screen</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Manim Community <span style="color: #008000; text-decoration-color: #008000">v0.18.1</span>
+
+</pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>                                                                                                                        </code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<video src="media/jupyter/AnimatedSquareToCircle@2024-05-01@19-15-55.mp4" controls="" autoplay="" loop="" style="max-width: 60%;">
+      Your browser does not support the <code>video</code> element.
+    </video>
+</div>
+</div>
+<div id="cell-15" class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> DifferentRotations(Scene):</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> construct(<span class="va">self</span>):</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>        left_square <span class="op">=</span> Square(color<span class="op">=</span>BLUE, fill_opacity<span class="op">=</span><span class="fl">0.7</span>).shift(<span class="dv">2</span> <span class="op">*</span> LEFT)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>        right_square <span class="op">=</span> Square(color<span class="op">=</span>GREEN, fill_opacity<span class="op">=</span><span class="fl">0.7</span>).shift(<span class="dv">2</span> <span class="op">*</span> RIGHT)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.play(</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>            left_square.animate.rotate(PI), Rotate(right_square, angle<span class="op">=</span>PI), run_time<span class="op">=</span><span class="dv">2</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.wait()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Manim Community <span style="color: #008000; text-decoration-color: #008000">v0.18.1</span>
+
+</pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>                                                                                                                        </code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<video src="media/jupyter/DifferentRotations@2024-05-01@19-15-56.mp4" controls="" autoplay="" loop="" style="max-width: 60%;">
+      Your browser does not support the <code>video</code> element.
+    </video>
+</div>
+</div>
+</section>
+<section id="transform-vs-replacementtransform" class="level2">
+<h2 class="anchored" data-anchor-id="transform-vs-replacementtransform"><code>Transform</code> vs <code>ReplacementTransform</code></h2>
+<p>The difference between Transform and ReplacementTransform is that Transform(mob1, mob2) transforms the points (as well as other attributes like color) of mob1 into the points/attributes of mob2.</p>
+<p>ReplacementTransform(mob1, mob2) on the other hand literally replaces mob1 on the scene with mob2.</p>
+<p>The use of ReplacementTransform or Transform is mostly up to personal preference. They can be used to accomplish the same effect, as shown below.</p>
+<div id="cell-18" class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TwoTransforms(Scene):</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> transform(<span class="va">self</span>):</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>        a <span class="op">=</span> Circle()</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>        b <span class="op">=</span> Square()</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>        c <span class="op">=</span> Triangle()</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.play(Transform(a, b))</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.play(Transform(a, c))</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.play(FadeOut(a))</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> replacement_transform(<span class="va">self</span>):</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>        a <span class="op">=</span> Circle()</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>        b <span class="op">=</span> Square()</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>        c <span class="op">=</span> Triangle()</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.play(ReplacementTransform(a, b))</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.play(ReplacementTransform(b, c))</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.play(FadeOut(c))</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> construct(<span class="va">self</span>):</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.transform()</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.wait(<span class="fl">0.5</span>)  <span class="co"># wait for 0.5 seconds</span></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.replacement_transform()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Manim Community <span style="color: #008000; text-decoration-color: #008000">v0.18.1</span>
+
+</pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>                                                                                                                        </code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<video src="media/jupyter/TwoTransforms@2024-05-01@19-15-56.mp4" controls="" autoplay="" loop="" style="max-width: 60%;">
+      Your browser does not support the <code>video</code> element.
+    </video>
+</div>
+</div>
+<video width="320" height="240" controls="">
+<source src="media/jupyter/AnimatedSquareToCircle@2024-05-01@18-04-50.mp4" type="video/mp4">
+</video>
+<div id="cell-20" class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> Video</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>Video(<span class="st">"media/jupyter/AnimatedSquareToCircle@2024-05-01@18-04-50.mp4"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<video src="media/jupyter/AnimatedSquareToCircle@2024-05-01@18-04-50.mp4" controls="">
+      Your browser does not support the <code>video</code> element.
+    </video>
+</div>
+</div>
+</section>
+<section id="advanced" class="level2">
+<h2 class="anchored" data-anchor-id="advanced">Advanced</h2>
+<section id="shapes" class="level3">
+<h3 class="anchored" data-anchor-id="shapes">Shapes</h3>
+<div id="cell-23" class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Shapes(Scene):</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> construct(<span class="va">self</span>):</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>        circle <span class="op">=</span> Circle()</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>        square <span class="op">=</span> Square()</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>        triangle <span class="op">=</span> Triangle()</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>        circle.shift(LEFT)</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>        square.shift(UP)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>        triangle.shift(RIGHT)</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.add(circle, square, triangle)</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>        <span class="co"># self.wait(1)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Manim Community <span style="color: #008000; text-decoration-color: #008000">v0.18.1</span>
+
+</pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="70_Manim_files/figure-html/cell-11-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="mobjectplacement" class="level3">
+<h3 class="anchored" data-anchor-id="mobjectplacement">MobjectPlacement</h3>
+<div id="cell-25" class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MobjectPlacement(Scene):</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> construct(<span class="va">self</span>):</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>        circle <span class="op">=</span> Circle()</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>        square <span class="op">=</span> Square()</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>        triangle <span class="op">=</span> Triangle()</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>        <span class="co"># place the circle two units left from the origin</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>        circle.move_to(LEFT <span class="op">*</span> <span class="dv">2</span>)</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># place the square to the left of the circle</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>        square.next_to(circle, LEFT)</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># align the left border of the triangle to the left border of the circle</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>        triangle.align_to(circle, LEFT)</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.add(circle, square, triangle)</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.wait(<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Manim Community <span style="color: #008000; text-decoration-color: #008000">v0.18.1</span>
+
+</pre>
+</div>
+<div class="cell-output cell-output-display">
+<video src="media/jupyter/MobjectPlacement@2024-05-01@19-15-56.mp4" controls="" autoplay="" loop="" style="max-width: 60%;">
+      Your browser does not support the <code>video</code> element.
+    </video>
+</div>
+</div>
+</section>
+<section id="mobjectstyling" class="level3">
+<h3 class="anchored" data-anchor-id="mobjectstyling">MobjectStyling</h3>
+<div id="cell-27" class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MobjectStyling(Scene):</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> construct(<span class="va">self</span>):</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>        circle <span class="op">=</span> Circle().shift(LEFT)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>        square <span class="op">=</span> Square().shift(UP)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>        triangle <span class="op">=</span> Triangle().shift(RIGHT)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>        circle.set_stroke(color<span class="op">=</span>GREEN, width<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>        square.set_fill(YELLOW, opacity<span class="op">=</span><span class="fl">1.0</span>)</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>        triangle.set_fill(PINK, opacity<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.add(circle, square, triangle)</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.wait(<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Manim Community <span style="color: #008000; text-decoration-color: #008000">v0.18.1</span>
+
+</pre>
+</div>
+<div class="cell-output cell-output-display">
+<video src="media/jupyter/MobjectStyling@2024-05-01@19-15-56.mp4" controls="" autoplay="" loop="" style="max-width: 60%;">
+      Your browser does not support the <code>video</code> element.
+    </video>
+</div>
+</div>
+</section>
+<section id="animations" class="level3">
+<h3 class="anchored" data-anchor-id="animations">Animations</h3>
+<div id="cell-29" class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SomeAnimations(Scene):</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> construct(<span class="va">self</span>):</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>        square <span class="op">=</span> Square().set_fill(RED, opacity<span class="op">=</span><span class="fl">1.0</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.add(square)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>        <span class="co"># some animations display mobjects, ...</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.play(FadeIn(square))</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>        <span class="co"># ... some move or rotate mobjects around...</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.play(Rotate(square, PI<span class="op">/</span><span class="dv">4</span>))</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.play(square.animate.set_fill(WHITE).shift(UP).rotate(PI <span class="op">/</span> <span class="dv">3</span>), run_time<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>        <span class="co"># some animations remove mobjects from the screen</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.play(FadeOut(square))</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.wait(<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Manim Community <span style="color: #008000; text-decoration-color: #008000">v0.18.1</span>
+
+</pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>                                                                                                                        </code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<video src="media/jupyter/SomeAnimations@2024-05-01@19-15-57.mp4" controls="" autoplay="" loop="" style="max-width: 60%;">
+      Your browser does not support the <code>video</code> element.
+    </video>
+</div>
+</div>
+<div id="cell-30" class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MobjectExample(Scene):</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> construct(<span class="va">self</span>):</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>        p1 <span class="op">=</span> [<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>]</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>        p2 <span class="op">=</span> [ <span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>]</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>        p3 <span class="op">=</span> [ <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>]</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>        p4 <span class="op">=</span> [<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>]</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>        a  <span class="op">=</span> Line(p1,p2).append_points(Line(p2,p3).points).append_points(Line(p3,p4).points)</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>        point_start  <span class="op">=</span> a.get_start()</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>        point_end    <span class="op">=</span> a.get_end()</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>        point_center <span class="op">=</span> a.get_center()</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.add(Text(<span class="ss">f"a.get_start() = </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">round</span>(point_start,<span class="dv">2</span>)<span class="sc">.</span>tolist()<span class="sc">}</span><span class="ss">"</span>, font_size<span class="op">=</span><span class="dv">24</span>).to_edge(UR).set_color(YELLOW))</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.add(Text(<span class="ss">f"a.get_end() = </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">round</span>(point_end,<span class="dv">2</span>)<span class="sc">.</span>tolist()<span class="sc">}</span><span class="ss">"</span>, font_size<span class="op">=</span><span class="dv">24</span>).next_to(<span class="va">self</span>.mobjects[<span class="op">-</span><span class="dv">1</span>],DOWN).set_color(RED))</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.add(Text(<span class="ss">f"a.get_center() = </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">round</span>(point_center,<span class="dv">2</span>)<span class="sc">.</span>tolist()<span class="sc">}</span><span class="ss">"</span>, font_size<span class="op">=</span><span class="dv">24</span>).next_to(<span class="va">self</span>.mobjects[<span class="op">-</span><span class="dv">1</span>],DOWN).set_color(BLUE))</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.add(Dot(a.get_start()).set_color(YELLOW).scale(<span class="dv">2</span>))</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.add(Dot(a.get_end()).set_color(RED).scale(<span class="dv">2</span>))</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.add(Dot(a.get_top()).set_color(GREEN_A).scale(<span class="dv">2</span>))</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.add(Dot(a.get_bottom()).set_color(GREEN_D).scale(<span class="dv">2</span>))</span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.add(Dot(a.get_center()).set_color(BLUE).scale(<span class="dv">2</span>))</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.add(Dot(a.point_from_proportion(<span class="fl">0.5</span>)).set_color(ORANGE).scale(<span class="dv">2</span>))</span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.add(<span class="op">*</span>[Dot(x) <span class="cf">for</span> x <span class="kw">in</span> a.points])</span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.add(a)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Manim Community <span style="color: #008000; text-decoration-color: #008000">v0.18.1</span>
+
+</pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="70_Manim_files/figure-html/cell-15-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="example" class="level2">
+<h2 class="anchored" data-anchor-id="example">Example</h2>
+<div id="cell-32" class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> BraceAnnotation(Scene):</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> construct(<span class="va">self</span>):</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>        dot <span class="op">=</span> Dot([<span class="op">-</span><span class="dv">2</span>, <span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>])</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>        dot2 <span class="op">=</span> Dot([<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>])</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>        line <span class="op">=</span> Line(dot.get_center(), dot2.get_center()).set_color(ORANGE)</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>        b1 <span class="op">=</span> Brace(line)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>        b1text <span class="op">=</span> b1.get_text(<span class="ss">f"Horizontal distance"</span>)</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>        b2 <span class="op">=</span> Brace(line, direction<span class="op">=</span>line.copy().rotate(PI <span class="op">/</span> <span class="dv">2</span>).get_unit_vector())</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>        b2text <span class="op">=</span> b2.get_tex(<span class="ss">f"x-x_1"</span>)</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.add(line, dot, dot2, b1, b2, b1text, b2text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Manim Community <span style="color: #008000; text-decoration-color: #008000">v0.18.1</span>
+
+</pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[05/01/24 19:15:57] </span><span style="color: #800000; text-decoration-color: #800000; font-weight: bold">ERROR   </span> LaTeX compilation error: LaTeX Error: <span style="color: #808000; text-decoration-color: #808000; font-weight: bold">File</span> `standalone.cls'    <a href="file:///home/ben/mambaforge/envs/pfast/lib/python3.12/site-packages/manim/utils/tex_file_writing.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">tex_file_writing.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///home/ben/mambaforge/envs/pfast/lib/python3.12/site-packages/manim/utils/tex_file_writing.py#314" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">314</span></a>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         not found.                                                     <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>                                                                        <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+</pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #800000; text-decoration-color: #800000; font-weight: bold">ERROR   </span> Context of error:                                              <a href="file:///home/ben/mambaforge/envs/pfast/lib/python3.12/site-packages/manim/utils/tex_file_writing.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">tex_file_writing.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///home/ben/mambaforge/envs/pfast/lib/python3.12/site-packages/manim/utils/tex_file_writing.py#348" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">348</span></a>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         -&gt; \documentclass<span style="font-weight: bold">[</span>preview<span style="font-weight: bold">]{</span>standalone<span style="font-weight: bold">}</span>                         <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         \usepackage<span style="font-weight: bold">[</span>english<span style="font-weight: bold">]{</span>babel<span style="font-weight: bold">}</span>                                    <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         \usepackage<span style="font-weight: bold">{</span>amsmath<span style="font-weight: bold">}</span>                                           <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         \usepackage<span style="font-weight: bold">{</span>amssymb<span style="font-weight: bold">}</span>                                           <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>                                                                        <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+</pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #800000; text-decoration-color: #800000; font-weight: bold">ERROR   </span> LaTeX compilation error: Emergency stop.                       <a href="file:///home/ben/mambaforge/envs/pfast/lib/python3.12/site-packages/manim/utils/tex_file_writing.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">tex_file_writing.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///home/ben/mambaforge/envs/pfast/lib/python3.12/site-packages/manim/utils/tex_file_writing.py#314" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">314</span></a>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>                                                                        <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+</pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #800000; text-decoration-color: #800000; font-weight: bold">ERROR   </span> Context of error:                                              <a href="file:///home/ben/mambaforge/envs/pfast/lib/python3.12/site-packages/manim/utils/tex_file_writing.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">tex_file_writing.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///home/ben/mambaforge/envs/pfast/lib/python3.12/site-packages/manim/utils/tex_file_writing.py#348" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">348</span></a>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         -&gt; \documentclass<span style="font-weight: bold">[</span>preview<span style="font-weight: bold">]{</span>standalone<span style="font-weight: bold">}</span>                         <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         \usepackage<span style="font-weight: bold">[</span>english<span style="font-weight: bold">]{</span>babel<span style="font-weight: bold">}</span>                                    <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         \usepackage<span style="font-weight: bold">{</span>amsmath<span style="font-weight: bold">}</span>                                           <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         \usepackage<span style="font-weight: bold">{</span>amssymb<span style="font-weight: bold">}</span>                                           <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>                                                                        <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+</pre>
+</div>
+<div class="cell-output cell-output-error">
+<pre><code>ValueError: latex error converting to dvi. See log output above or the log file: media/Tex/1c22c507eca0dfce.log</code></pre>
+</div>
+</div>
+<div id="cell-33" class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> VectorArrow(Scene):</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> construct(<span class="va">self</span>):</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>        dot <span class="op">=</span> Dot(ORIGIN)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>        arrow <span class="op">=</span> Arrow(ORIGIN, [<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">0</span>], buff<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>        numberplane <span class="op">=</span> NumberPlane()</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>        origin_text <span class="op">=</span> Text(<span class="st">'(0, 0)'</span>).next_to(dot, DOWN)</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>        tip_text <span class="op">=</span> Text(<span class="st">'(2, 2)'</span>).next_to(arrow.get_end(), RIGHT)</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.add(numberplane, dot, arrow, origin_text, tip_text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Manim Community <span style="color: #008000; text-decoration-color: #008000">v0.18.1</span>
+
+</pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="70_Manim_files/figure-html/cell-17-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-34" class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> PointMovingOnShapes(Scene):</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> construct(<span class="va">self</span>):</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>        circle <span class="op">=</span> Circle(radius<span class="op">=</span><span class="dv">1</span>, color<span class="op">=</span>BLUE)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>        dot <span class="op">=</span> Dot()</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>        dot2 <span class="op">=</span> dot.copy().shift(RIGHT)</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.add(dot)</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>        line <span class="op">=</span> Line([<span class="dv">3</span>, <span class="dv">0</span>, <span class="dv">0</span>], [<span class="dv">5</span>, <span class="dv">0</span>, <span class="dv">0</span>])</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.add(line)</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.play(GrowFromCenter(circle))</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.play(Transform(dot, dot2))</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.play(MoveAlongPath(dot, circle), run_time<span class="op">=</span><span class="dv">2</span>, rate_func<span class="op">=</span>linear)</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.play(Rotating(dot, about_point<span class="op">=</span>[<span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">0</span>]), run_time<span class="op">=</span><span class="fl">1.5</span>)</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.wait()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Manim Community <span style="color: #008000; text-decoration-color: #008000">v0.18.1</span>
+
+</pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>                                                                                                                        </code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<video src="media/jupyter/PointMovingOnShapes@2024-05-01@19-16-09.mp4" controls="" autoplay="" loop="" style="max-width: 60%;">
+      Your browser does not support the <code>video</code> element.
+    </video>
+</div>
+</div>
+<div id="cell-35" class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MovingAngle(Scene):</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> construct(<span class="va">self</span>):</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>        rotation_center <span class="op">=</span> LEFT</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>        theta_tracker <span class="op">=</span> ValueTracker(<span class="dv">110</span>)</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>        line1 <span class="op">=</span> Line(LEFT, RIGHT)</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>        line_moving <span class="op">=</span> Line(LEFT, RIGHT)</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>        line_ref <span class="op">=</span> line_moving.copy()</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>        line_moving.rotate(</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>            theta_tracker.get_value() <span class="op">*</span> DEGREES, about_point<span class="op">=</span>rotation_center</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>        a <span class="op">=</span> Angle(line1, line_moving, radius<span class="op">=</span><span class="fl">0.5</span>, other_angle<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>        tex <span class="op">=</span> MathTex(<span class="vs">r"\theta"</span>).move_to(</span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>            Angle(</span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>                line1, line_moving, radius<span class="op">=</span><span class="fl">0.5</span> <span class="op">+</span> <span class="dv">3</span> <span class="op">*</span> SMALL_BUFF, other_angle<span class="op">=</span><span class="va">False</span></span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>            ).point_from_proportion(<span class="fl">0.5</span>)</span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.add(line1, line_moving, a, tex)</span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.wait()</span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>        line_moving.add_updater(</span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a>            <span class="kw">lambda</span> x: x.become(line_ref.copy()).rotate(</span>
+<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>                theta_tracker.get_value() <span class="op">*</span> DEGREES, about_point<span class="op">=</span>rotation_center</span>
+<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb29-27"><a href="#cb29-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-28"><a href="#cb29-28" aria-hidden="true" tabindex="-1"></a>        a.add_updater(</span>
+<span id="cb29-29"><a href="#cb29-29" aria-hidden="true" tabindex="-1"></a>            <span class="kw">lambda</span> x: x.become(Angle(line1, line_moving, radius<span class="op">=</span><span class="fl">0.5</span>, other_angle<span class="op">=</span><span class="va">False</span>))</span>
+<span id="cb29-30"><a href="#cb29-30" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb29-31"><a href="#cb29-31" aria-hidden="true" tabindex="-1"></a>        tex.add_updater(</span>
+<span id="cb29-32"><a href="#cb29-32" aria-hidden="true" tabindex="-1"></a>            <span class="kw">lambda</span> x: x.move_to(</span>
+<span id="cb29-33"><a href="#cb29-33" aria-hidden="true" tabindex="-1"></a>                Angle(</span>
+<span id="cb29-34"><a href="#cb29-34" aria-hidden="true" tabindex="-1"></a>                    line1, line_moving, radius<span class="op">=</span><span class="fl">0.5</span> <span class="op">+</span> <span class="dv">3</span> <span class="op">*</span> SMALL_BUFF, other_angle<span class="op">=</span><span class="va">False</span></span>
+<span id="cb29-35"><a href="#cb29-35" aria-hidden="true" tabindex="-1"></a>                ).point_from_proportion(<span class="fl">0.5</span>)</span>
+<span id="cb29-36"><a href="#cb29-36" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb29-37"><a href="#cb29-37" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb29-38"><a href="#cb29-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-39"><a href="#cb29-39" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.play(theta_tracker.animate.set_value(<span class="dv">40</span>))</span>
+<span id="cb29-40"><a href="#cb29-40" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.play(theta_tracker.animate.increment_value(<span class="dv">140</span>))</span>
+<span id="cb29-41"><a href="#cb29-41" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.play(tex.animate.set_color(RED), run_time<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb29-42"><a href="#cb29-42" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.play(theta_tracker.animate.set_value(<span class="dv">350</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Manim Community <span style="color: #008000; text-decoration-color: #008000">v0.18.1</span>
+
+</pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[05/01/24 19:16:10] </span><span style="color: #800000; text-decoration-color: #800000; font-weight: bold">ERROR   </span> LaTeX compilation error: LaTeX Error: <span style="color: #808000; text-decoration-color: #808000; font-weight: bold">File</span> `standalone.cls'    <a href="file:///home/ben/mambaforge/envs/pfast/lib/python3.12/site-packages/manim/utils/tex_file_writing.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">tex_file_writing.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///home/ben/mambaforge/envs/pfast/lib/python3.12/site-packages/manim/utils/tex_file_writing.py#314" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">314</span></a>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         not found.                                                     <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>                                                                        <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+</pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #800000; text-decoration-color: #800000; font-weight: bold">ERROR   </span> Context of error:                                              <a href="file:///home/ben/mambaforge/envs/pfast/lib/python3.12/site-packages/manim/utils/tex_file_writing.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">tex_file_writing.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///home/ben/mambaforge/envs/pfast/lib/python3.12/site-packages/manim/utils/tex_file_writing.py#348" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">348</span></a>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         -&gt; \documentclass<span style="font-weight: bold">[</span>preview<span style="font-weight: bold">]{</span>standalone<span style="font-weight: bold">}</span>                         <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         \usepackage<span style="font-weight: bold">[</span>english<span style="font-weight: bold">]{</span>babel<span style="font-weight: bold">}</span>                                    <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         \usepackage<span style="font-weight: bold">{</span>amsmath<span style="font-weight: bold">}</span>                                           <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         \usepackage<span style="font-weight: bold">{</span>amssymb<span style="font-weight: bold">}</span>                                           <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>                                                                        <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+</pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #800000; text-decoration-color: #800000; font-weight: bold">ERROR   </span> LaTeX compilation error: Emergency stop.                       <a href="file:///home/ben/mambaforge/envs/pfast/lib/python3.12/site-packages/manim/utils/tex_file_writing.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">tex_file_writing.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///home/ben/mambaforge/envs/pfast/lib/python3.12/site-packages/manim/utils/tex_file_writing.py#314" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">314</span></a>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>                                                                        <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+</pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #800000; text-decoration-color: #800000; font-weight: bold">ERROR   </span> Context of error:                                              <a href="file:///home/ben/mambaforge/envs/pfast/lib/python3.12/site-packages/manim/utils/tex_file_writing.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">tex_file_writing.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///home/ben/mambaforge/envs/pfast/lib/python3.12/site-packages/manim/utils/tex_file_writing.py#348" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">348</span></a>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         -&gt; \documentclass<span style="font-weight: bold">[</span>preview<span style="font-weight: bold">]{</span>standalone<span style="font-weight: bold">}</span>                         <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         \usepackage<span style="font-weight: bold">[</span>english<span style="font-weight: bold">]{</span>babel<span style="font-weight: bold">}</span>                                    <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         \usepackage<span style="font-weight: bold">{</span>amsmath<span style="font-weight: bold">}</span>                                           <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         \usepackage<span style="font-weight: bold">{</span>amssymb<span style="font-weight: bold">}</span>                                           <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>                                                                        <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+</pre>
+</div>
+<div class="cell-output cell-output-error">
+<pre><code>ValueError: latex error converting to dvi. See log output above or the log file: media/Tex/0cec1e994feab60e.log</code></pre>
+</div>
+</div>
+<div id="cell-36" class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MovingDots(Scene):</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> construct(<span class="va">self</span>):</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>        d1,d2<span class="op">=</span>Dot(color<span class="op">=</span>BLUE),Dot(color<span class="op">=</span>GREEN)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>        dg<span class="op">=</span>VGroup(d1,d2).arrange(RIGHT,buff<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>        l1<span class="op">=</span>Line(d1.get_center(),d2.get_center()).set_color(RED)</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>        x<span class="op">=</span>ValueTracker(<span class="dv">0</span>)</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>        y<span class="op">=</span>ValueTracker(<span class="dv">0</span>)</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>        d1.add_updater(<span class="kw">lambda</span> z: z.set_x(x.get_value()))</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>        d2.add_updater(<span class="kw">lambda</span> z: z.set_y(y.get_value()))</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>        l1.add_updater(<span class="kw">lambda</span> z: z.become(Line(d1.get_center(),d2.get_center())))</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.add(d1,d2,l1)</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.play(x.animate.set_value(<span class="dv">5</span>))</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.play(y.animate.set_value(<span class="dv">4</span>))</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.wait()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Manim Community <span style="color: #008000; text-decoration-color: #008000">v0.18.1</span>
+
+</pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>                                                                                                                        </code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<video src="media/jupyter/MovingDots@2024-05-01@19-16-11.mp4" controls="" autoplay="" loop="" style="max-width: 60%;">
+      Your browser does not support the <code>video</code> element.
+    </video>
+</div>
+</div>
+<div id="cell-37" class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MovingGroupToDestination(Scene):</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> construct(<span class="va">self</span>):</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>        group <span class="op">=</span> VGroup(Dot(LEFT), Dot(ORIGIN), Dot(RIGHT, color<span class="op">=</span>RED), Dot(<span class="dv">2</span> <span class="op">*</span> RIGHT)).scale(<span class="fl">1.4</span>)</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>        dest <span class="op">=</span> Dot([<span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">0</span>], color<span class="op">=</span>YELLOW)</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.add(group, dest)</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.play(group.animate.shift(dest.get_center() <span class="op">-</span> group[<span class="dv">2</span>].get_center()))</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.wait(<span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Manim Community <span style="color: #008000; text-decoration-color: #008000">v0.18.1</span>
+
+</pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>                                                                                                                        </code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<video src="media/jupyter/MovingGroupToDestination@2024-05-01@19-16-11.mp4" controls="" autoplay="" loop="" style="max-width: 60%;">
+      Your browser does not support the <code>video</code> element.
+    </video>
+</div>
+</div>
+<div id="cell-38" class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SinAndCosFunctionPlot(Scene):</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> construct(<span class="va">self</span>):</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>        axes <span class="op">=</span> Axes(</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>            x_range<span class="op">=</span>[<span class="op">-</span><span class="dv">10</span>, <span class="fl">10.3</span>, <span class="dv">1</span>],</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>            y_range<span class="op">=</span>[<span class="op">-</span><span class="fl">1.5</span>, <span class="fl">1.5</span>, <span class="dv">1</span>],</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>            x_length<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>            axis_config<span class="op">=</span>{<span class="st">"color"</span>: GREEN},</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>            x_axis_config<span class="op">=</span>{</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>                <span class="st">"numbers_to_include"</span>: np.arange(<span class="op">-</span><span class="dv">10</span>, <span class="fl">10.01</span>, <span class="dv">2</span>),</span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>                <span class="st">"numbers_with_elongated_ticks"</span>: np.arange(<span class="op">-</span><span class="dv">10</span>, <span class="fl">10.01</span>, <span class="dv">2</span>),</span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>            },</span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>            tips<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>        axes_labels <span class="op">=</span> axes.get_axis_labels()</span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>        sin_graph <span class="op">=</span> axes.plot(<span class="kw">lambda</span> x: np.sin(x), color<span class="op">=</span>BLUE)</span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>        cos_graph <span class="op">=</span> axes.plot(<span class="kw">lambda</span> x: np.cos(x), color<span class="op">=</span>RED)</span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>        sin_label <span class="op">=</span> axes.get_graph_label(</span>
+<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a>            sin_graph, <span class="st">"</span><span class="ch">\\</span><span class="st">sin(x)"</span>, x_val<span class="op">=-</span><span class="dv">10</span>, direction<span class="op">=</span>UP <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb35-21"><a href="#cb35-21" aria-hidden="true" tabindex="-1"></a>        cos_label <span class="op">=</span> axes.get_graph_label(cos_graph, label<span class="op">=</span><span class="st">"</span><span class="ch">\\</span><span class="st">cos(x)"</span>)</span>
+<span id="cb35-22"><a href="#cb35-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-23"><a href="#cb35-23" aria-hidden="true" tabindex="-1"></a>        vert_line <span class="op">=</span> axes.get_vertical_line(</span>
+<span id="cb35-24"><a href="#cb35-24" aria-hidden="true" tabindex="-1"></a>            axes.i2gp(TAU, cos_graph), color<span class="op">=</span>YELLOW, line_func<span class="op">=</span>Line</span>
+<span id="cb35-25"><a href="#cb35-25" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb35-26"><a href="#cb35-26" aria-hidden="true" tabindex="-1"></a>        line_label <span class="op">=</span> axes.get_graph_label(</span>
+<span id="cb35-27"><a href="#cb35-27" aria-hidden="true" tabindex="-1"></a>            cos_graph, <span class="st">"x=2\pi"</span>, x_val<span class="op">=</span>TAU, direction<span class="op">=</span>UR, color<span class="op">=</span>WHITE</span>
+<span id="cb35-28"><a href="#cb35-28" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb35-29"><a href="#cb35-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-30"><a href="#cb35-30" aria-hidden="true" tabindex="-1"></a>        plot <span class="op">=</span> VGroup(axes, sin_graph, cos_graph, vert_line)</span>
+<span id="cb35-31"><a href="#cb35-31" aria-hidden="true" tabindex="-1"></a>        labels <span class="op">=</span> VGroup(axes_labels, sin_label, cos_label, line_label)</span>
+<span id="cb35-32"><a href="#cb35-32" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.add(plot, labels)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>&lt;string&gt;:28: SyntaxWarning: invalid escape sequence '\p'</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Manim Community <span style="color: #008000; text-decoration-color: #008000">v0.18.1</span>
+
+</pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[05/01/24 19:16:12] </span><span style="color: #800000; text-decoration-color: #800000; font-weight: bold">ERROR   </span> LaTeX compilation error: LaTeX Error: <span style="color: #808000; text-decoration-color: #808000; font-weight: bold">File</span> `standalone.cls'    <a href="file:///home/ben/mambaforge/envs/pfast/lib/python3.12/site-packages/manim/utils/tex_file_writing.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">tex_file_writing.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///home/ben/mambaforge/envs/pfast/lib/python3.12/site-packages/manim/utils/tex_file_writing.py#314" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">314</span></a>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         not found.                                                     <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>                                                                        <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+</pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #800000; text-decoration-color: #800000; font-weight: bold">ERROR   </span> Context of error:                                              <a href="file:///home/ben/mambaforge/envs/pfast/lib/python3.12/site-packages/manim/utils/tex_file_writing.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">tex_file_writing.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///home/ben/mambaforge/envs/pfast/lib/python3.12/site-packages/manim/utils/tex_file_writing.py#348" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">348</span></a>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         -&gt; \documentclass<span style="font-weight: bold">[</span>preview<span style="font-weight: bold">]{</span>standalone<span style="font-weight: bold">}</span>                         <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         \usepackage<span style="font-weight: bold">[</span>english<span style="font-weight: bold">]{</span>babel<span style="font-weight: bold">}</span>                                    <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         \usepackage<span style="font-weight: bold">{</span>amsmath<span style="font-weight: bold">}</span>                                           <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         \usepackage<span style="font-weight: bold">{</span>amssymb<span style="font-weight: bold">}</span>                                           <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>                                                                        <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+</pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #800000; text-decoration-color: #800000; font-weight: bold">ERROR   </span> LaTeX compilation error: Emergency stop.                       <a href="file:///home/ben/mambaforge/envs/pfast/lib/python3.12/site-packages/manim/utils/tex_file_writing.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">tex_file_writing.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///home/ben/mambaforge/envs/pfast/lib/python3.12/site-packages/manim/utils/tex_file_writing.py#314" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">314</span></a>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>                                                                        <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+</pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #800000; text-decoration-color: #800000; font-weight: bold">ERROR   </span> Context of error:                                              <a href="file:///home/ben/mambaforge/envs/pfast/lib/python3.12/site-packages/manim/utils/tex_file_writing.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">tex_file_writing.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///home/ben/mambaforge/envs/pfast/lib/python3.12/site-packages/manim/utils/tex_file_writing.py#348" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">348</span></a>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         -&gt; \documentclass<span style="font-weight: bold">[</span>preview<span style="font-weight: bold">]{</span>standalone<span style="font-weight: bold">}</span>                         <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         \usepackage<span style="font-weight: bold">[</span>english<span style="font-weight: bold">]{</span>babel<span style="font-weight: bold">}</span>                                    <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         \usepackage<span style="font-weight: bold">{</span>amsmath<span style="font-weight: bold">}</span>                                           <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         \usepackage<span style="font-weight: bold">{</span>amssymb<span style="font-weight: bold">}</span>                                           <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>                                                                        <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                       </span>
+</pre>
+</div>
+<div class="cell-output cell-output-error">
+<pre><code>ValueError: latex error converting to dvi. See log output above or the log file: media/Tex/ba96de15f98acfc8.log</code></pre>
+</div>
+</div>
+<div id="cell-39" class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> FollowingGraphCamera(MovingCameraScene):</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> construct(<span class="va">self</span>):</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.camera.frame.save_state()</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>        <span class="co"># create the axes and the curve</span></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>        ax <span class="op">=</span> Axes(x_range<span class="op">=</span>[<span class="op">-</span><span class="dv">1</span>, <span class="dv">10</span>], y_range<span class="op">=</span>[<span class="op">-</span><span class="dv">1</span>, <span class="dv">10</span>])</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>        graph <span class="op">=</span> ax.plot(<span class="kw">lambda</span> x: np.sin(x), color<span class="op">=</span>BLUE, x_range<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">3</span> <span class="op">*</span> PI])</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># create dots based on the graph</span></span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>        moving_dot <span class="op">=</span> Dot(ax.i2gp(graph.t_min, graph), color<span class="op">=</span>ORANGE)</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>        dot_1 <span class="op">=</span> Dot(ax.i2gp(graph.t_min, graph))</span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>        dot_2 <span class="op">=</span> Dot(ax.i2gp(graph.t_max, graph))</span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.add(ax, graph, dot_1, dot_2, moving_dot)</span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.play(<span class="va">self</span>.camera.frame.animate.scale(<span class="fl">0.5</span>).move_to(moving_dot))</span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>        <span class="kw">def</span> update_curve(mob):</span>
+<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a>            mob.move_to(moving_dot.get_center())</span>
+<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-20"><a href="#cb38-20" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.camera.frame.add_updater(update_curve)</span>
+<span id="cb38-21"><a href="#cb38-21" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.play(MoveAlongPath(moving_dot, graph, rate_func<span class="op">=</span>linear))</span>
+<span id="cb38-22"><a href="#cb38-22" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.camera.frame.remove_updater(update_curve)</span>
+<span id="cb38-23"><a href="#cb38-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-24"><a href="#cb38-24" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.play(Restore(<span class="va">self</span>.camera.frame))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Manim Community <span style="color: #008000; text-decoration-color: #008000">v0.18.1</span>
+
+</pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>                                                                                                                        </code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<video src="media/jupyter/FollowingGraphCamera@2024-05-01@19-16-13.mp4" controls="" autoplay="" loop="" style="max-width: 60%;">
+      Your browser does not support the <code>video</code> element.
+    </video>
+</div>
+</div>
+<div id="cell-40" class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ThreeDCameraRotation(ThreeDScene):</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> construct(<span class="va">self</span>):</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>        axes <span class="op">=</span> ThreeDAxes()</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>        circle<span class="op">=</span>Circle()</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.set_camera_orientation(phi<span class="op">=</span><span class="dv">75</span> <span class="op">*</span> DEGREES, theta<span class="op">=</span><span class="dv">30</span> <span class="op">*</span> DEGREES)</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.add(circle,axes)</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.begin_ambient_camera_rotation(rate<span class="op">=</span><span class="fl">0.1</span>)</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.wait()</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.stop_ambient_camera_rotation()</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.move_camera(phi<span class="op">=</span><span class="dv">75</span> <span class="op">*</span> DEGREES, theta<span class="op">=</span><span class="dv">30</span> <span class="op">*</span> DEGREES)</span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.wait()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Manim Community <span style="color: #008000; text-decoration-color: #008000">v0.18.1</span>
+
+</pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>                                                                                                                        </code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<video src="media/jupyter/ThreeDCameraRotation@2024-05-01@19-16-19.mp4" controls="" autoplay="" loop="" style="max-width: 60%;">
+      Your browser does not support the <code>video</code> element.
+    </video>
+</div>
+</div>
+
+
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/bthek1\.github\.io\/MLtools");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://utteranc.es/client.js" repo="quarto-dev/quarto-web" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../pivottablejs.html" class="pagination-link" aria-label="">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../Display/bokeh.html" class="pagination-link" aria-label="Bokeh">
+        <span class="nav-page-text">Bokeh</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link active" href="../index.html" aria-current="page">
+<p>Trademark</p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://github.com/bthek1/B_Blog/issues">
+<p>FAQ</p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://bthek1.github.io/benedicts_blog/Index.html">
+<p>License</p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="../index.html">
+<p>Trademark</p>
+</a>
+  </li>  
+</ul>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.dev/bthek1/MLtools/blob/main/Display/70_Manim.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bthek1/MLtools/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/bthek1">
+      <i class="bi bi-github" role="img" aria-label="Github">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/benedict-thekkel/">
+      <i class="bi bi-linkedin" role="img" aria-label="Linkedin">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
