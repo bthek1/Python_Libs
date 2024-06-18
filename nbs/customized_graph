@@ -1,5 +1,0 @@
-digraph {
-	A [label=Start color=red shape=ellipse]
-	B [label=End color=blue shape=box]
-	A -> B [label=Transition color=green]
-}
