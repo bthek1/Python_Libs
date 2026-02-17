@@ -1,11 +1,31 @@
 [build-system]
-requires = ["setuptools>=64.0"]
+requires = ["setuptools>=64"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name="MLtools"
-requires-python=">=3.7"
-dynamic = [ "keywords", "description", "version", "dependencies", "optional-dependencies", "readme", "license", "authors", "classifiers", "entry-points", "scripts", "urls"]
+name = "MLtools"
+dynamic = ["version"]
+description = "Usefull libraries for Machine Learning"
+readme = "README.md"
+requires-python = ">=3.7"
+license = {text = "Apache-2.0"}
+authors = [{name = "ben", email = "bthekkel1@gmail.com"}]
+keywords = ['nbdev', 'jupyter', 'notebook', 'python']
+classifiers = ["Natural Language :: English", "Intended Audience :: Developers", "Development Status :: 3 - Alpha", "Programming Language :: Python :: 3", "Programming Language :: Python :: 3 :: Only"]
+dependencies = ['pandas==1.5.3', 'altair', 'vega_datasets', 'numpy', 'matplotlib', 'geopandas', 'mitosheet', 'seaborn', 'ipywidgets', 'latexify-py']
 
-[tool.uv]
-cache-keys = [{ file = "pyproject.toml" }, { file = "settings.ini" }, { file = "setup.py" }]
+[project.urls]
+Repository = "https://github.com/bthek1/MLtools"
+Documentation = "https://bthek1.github.io/MLtools"
+
+[project.entry-points.nbdev]
+MLtools = "MLtools._modidx:d"
+
+[tool.setuptools.dynamic]
+version = {attr = "MLtools.__version__"}
+
+[tool.setuptools.packages.find]
+include = ["MLtools"]
+
+[tool.nbdev]
+jupyter_hooks = true

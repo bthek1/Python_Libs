@@ -5,4 +5,4 @@ d = { 'settings': { 'branch': 'main',
                 'doc_host': 'https://bthek1.github.io',
                 'git_url': 'https://github.com/bthek1/MLtools',
                 'lib_path': 'MLtools'},
-  'syms': {'MLtools.core': {'MLtools.core.foo': ('core.html#foo', 'MLtools/core.py')}}}
+  'syms': {}}
