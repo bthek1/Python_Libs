@@ -1,0 +1,1676 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Benedict Thekkel">
+<meta name="description" content="Ruff organizes linting rules into families (prefix codes like F, E, W, N, B, etc.). Here is the full high-level list.">
+
+<title>Ruff Rule Categories — Purpose &amp; Reason** – MLtools</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./nbdev.html" rel="next">
+<link href="./01_ruff.html" rel="prev">
+<link href="./favi.svg" rel="icon" type="image/svg+xml">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-4d9afe2b8d18ee9fa5d0d57b5ed4214d.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-c13c25b9f8fc91f117b644b0c35d7d1f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-78553533d5e2d5b395b40d62efaba7cd.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-c13c25b9f8fc91f117b644b0c35d7d1f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="Ruff Rule Categories — Purpose &amp; Reason** – MLtools">
+<meta property="og:description" content="Ruff organizes linting rules into families (prefix codes like F, E, W, N, B, etc.). Here is the full high-level list.">
+<meta property="og:image" content="https://bthek1.github.io/MLtools/Logo.svg">
+<meta property="og:site_name" content="MLtools">
+<meta name="twitter:title" content="Ruff Rule Categories — Purpose &amp; Reason** – MLtools">
+<meta name="twitter:description" content="Ruff organizes linting rules into families (prefix codes like F, E, W, N, B, etc.). Here is the full high-level list.">
+<meta name="twitter:image" content="https://bthek1.github.io/MLtools/Logo.svg">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar floating nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    <img src="./Logo.svg" alt="Quarto logo." class="navbar-logo light-content">
+    <img src="./Logo.svg" alt="Quarto logo." class="navbar-logo dark-content">
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-deep-learning" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Deep Learning</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-deep-learning">    
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/FastAI_course/">
+ <span class="dropdown-text">Fast AI course</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/DL_methods/">
+ <span class="dropdown-text">DL Methods</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/Research/">
+ <span class="dropdown-text">Research</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-ml-techniques" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">ML Techniques</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-ml-techniques">    
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/ML_methods/">
+ <span class="dropdown-text">ML Methods</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/TimeSeriesML/">
+ <span class="dropdown-text">Time series</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-web" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Web</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-web">    
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/WEB_doc/">
+ <span class="dropdown-text">Web Development</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/Front_End/">
+ <span class="dropdown-text">Front End</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/Back_End/">
+ <span class="dropdown-text">Back End</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/Docker_Containers/">
+ <span class="dropdown-text">Docker Containers</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-tools" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Tools</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-tools">    
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/Software_Tools/">
+ <span class="dropdown-text">Software Tools</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/Hardware_Tools/">
+ <span class="dropdown-text">Hardware Tools</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/Python_Libs/">
+ <span class="dropdown-text">Python Libraries</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/nbdevAuto/">
+ <span class="dropdown-text">Nbdev Automation</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-business" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Business</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-business">    
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/Business_doc/">
+ <span class="dropdown-text">Business Doc</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/Philosophy_doc/">
+ <span class="dropdown-text">Ideas Doc</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/Finances/">
+ <span class="dropdown-text">Finances</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/Other/">
+ <span class="dropdown-text">Other</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="https://bthek1.github.io/B_Blog/"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-help" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Help</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-help">    
+        <li>
+    <a class="dropdown-item" href="https://github.com/bthek1/B_Blog/issues"><i class="bi bi-bug" role="img">
+</i> 
+ <span class="dropdown-text">Report a Bug</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://github.com/bthek1/B_Blog/issues"><i class="bi bi-chat-right-text" role="img">
+</i> 
+ <span class="dropdown-text">Ask a Question</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://github.com/bthek1/B_Blog/issues"><i class="bi bi-question-circle" role="img">
+</i> 
+ <span class="dropdown-text">FAQ</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools tools-wide">
+    <a href="https://github.com/bthek1" title="" class="quarto-navigation-tool px-1" aria-label="Github"><i class="bi bi-github"></i></a>
+    <a href="https://www.linkedin.com/in/benedict-thekkel/" title="" class="quarto-navigation-tool px-1" aria-label="Linkedin"><i class="bi bi-linkedin"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./02_ruff_rule_categories.html">Ruff Rule Categories — Purpose &amp; Reason**</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Python Libraries for ML</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./matplotlib.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Matplotlib</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./numpy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Numpy</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./scipy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Scipy</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./0_pandas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Pandas</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./1_polars.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Polars</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./tqdm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">tqdm</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ipywidget.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ipywidget</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kaggle.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Kaggle</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dask.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dask</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./black.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Black</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_ruff.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ruff</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_ruff_rule_categories.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Ruff Rule Categories — Purpose &amp; Reason**</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./nbdev.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Nbdev</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./numexpr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Numexpr</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./datetime.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Datetime</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./request&amp;httpx.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Requests and Httpx</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dataclasses.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dataclass</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rich.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Rich</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./marimo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Marimo</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./0_pytest.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Pytest</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./1_monkey_patch.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Monkey Patch</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sqlalchemy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SQLAlchemy</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ast.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Abstract Syntax Trees (AST) in Python</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Display</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Display/manim.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Manim</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Display/bokeh.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bokeh</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Display/plotly.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Plotly</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Display/graphviz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Graphviz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Display/mermaid.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mermaid</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Display/altair.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Altair</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Environments</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Environments/venv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Venv</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Environments/pipenv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Pipenv</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Environments/poetry.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Poetry</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Environments/conda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Conda</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Environments/direnv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Direnv</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Environments/uv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">uv</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Environments/variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Linux Environment Variables</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Other</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Other/pivottablesjs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Pivot Tables js</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Other/pytube.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Pytube</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Other/mito.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mito</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Other/latexify.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Latexify examples</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Python</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Python/python_class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Python Class</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Python/python_args.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Python args</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Python/python_logging.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Python Logging</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Python/python_multiprocessing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Python Multiprocessing</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#pyflakes-f" id="toc-pyflakes-f" class="nav-link active" data-scroll-target="#pyflakes-f">1. <strong>Pyflakes (<code>F</code>)</strong></a></li>
+  <li><a href="#pycodestyle-e-w" id="toc-pycodestyle-e-w" class="nav-link" data-scroll-target="#pycodestyle-e-w">2. <strong>pycodestyle (<code>E</code>, <code>W</code>)</strong></a></li>
+  <li><a href="#pep8-naming-n" id="toc-pep8-naming-n" class="nav-link" data-scroll-target="#pep8-naming-n">3. <strong>Pep8-naming (<code>N</code>)</strong></a></li>
+  <li><a href="#pyupgrade-up" id="toc-pyupgrade-up" class="nav-link" data-scroll-target="#pyupgrade-up">4. <strong>pyupgrade (<code>UP</code>)</strong></a></li>
+  <li><a href="#flake8-bugbear-b" id="toc-flake8-bugbear-b" class="nav-link" data-scroll-target="#flake8-bugbear-b">5. <strong>Flake8-bugbear (<code>B</code>)</strong></a></li>
+  <li><a href="#flake8-comprehensions-c4" id="toc-flake8-comprehensions-c4" class="nav-link" data-scroll-target="#flake8-comprehensions-c4">6. <strong>Flake8-comprehensions (<code>C4</code>)</strong></a></li>
+  <li><a href="#isort-i" id="toc-isort-i" class="nav-link" data-scroll-target="#isort-i">7. <strong>isort (<code>I</code>)</strong></a></li>
+  <li><a href="#mccabe-c90" id="toc-mccabe-c90" class="nav-link" data-scroll-target="#mccabe-c90">8. <strong>mccabe (<code>C90</code>)</strong></a></li>
+  <li><a href="#pylint-rules-pl" id="toc-pylint-rules-pl" class="nav-link" data-scroll-target="#pylint-rules-pl">9. <strong>Pylint rules (<code>PL</code>)</strong></a></li>
+  <li><a href="#bandit-s" id="toc-bandit-s" class="nav-link" data-scroll-target="#bandit-s">10. <strong>Bandit (<code>S</code>)</strong></a></li>
+  <li><a href="#flake8-boolean-trap-fbt" id="toc-flake8-boolean-trap-fbt" class="nav-link" data-scroll-target="#flake8-boolean-trap-fbt">11. <strong>Flake8-boolean-trap (<code>FBT</code>)</strong></a></li>
+  <li><a href="#flake8-datetimez-dtz" id="toc-flake8-datetimez-dtz" class="nav-link" data-scroll-target="#flake8-datetimez-dtz">12. <strong>Flake8-datetimez (<code>DTZ</code>)</strong></a></li>
+  <li><a href="#flake8-erase-era" id="toc-flake8-erase-era" class="nav-link" data-scroll-target="#flake8-erase-era">13. <strong>Flake8-erase (<code>ERA</code>)</strong></a></li>
+  <li><a href="#flake8-unused-arguments-arg" id="toc-flake8-unused-arguments-arg" class="nav-link" data-scroll-target="#flake8-unused-arguments-arg">14. <strong>Flake8-unused-arguments (<code>ARG</code>)</strong></a></li>
+  <li><a href="#flake8-print-t20" id="toc-flake8-print-t20" class="nav-link" data-scroll-target="#flake8-print-t20">15. <strong>Flake8-print (<code>T20</code>)</strong></a></li>
+  <li><a href="#flake8-self-slf" id="toc-flake8-self-slf" class="nav-link" data-scroll-target="#flake8-self-slf">16. <strong>Flake8-self (<code>SLF</code>)</strong></a></li>
+  <li><a href="#flake8-type-checking-tc" id="toc-flake8-type-checking-tc" class="nav-link" data-scroll-target="#flake8-type-checking-tc">17. <strong>Flake8-type-checking (<code>TC</code>)</strong></a></li>
+  <li><a href="#flake8-ellipsis-ple" id="toc-flake8-ellipsis-ple" class="nav-link" data-scroll-target="#flake8-ellipsis-ple">18. <strong>Flake8-ellipsis (<code>PLE</code>)</strong></a></li>
+  <li><a href="#tryceratops-try" id="toc-tryceratops-try" class="nav-link" data-scroll-target="#tryceratops-try">19. <strong>Tryceratops (<code>TRY</code>)</strong></a></li>
+  <li><a href="#ruff-specific-rules-ruf" id="toc-ruff-specific-rules-ruf" class="nav-link" data-scroll-target="#ruff-specific-rules-ruf">20. <strong>Ruff-specific rules (<code>RUF</code>)</strong></a></li>
+  <li><a href="#django-rules-dj" id="toc-django-rules-dj" class="nav-link" data-scroll-target="#django-rules-dj">21. <strong>Django rules (<code>DJ</code>)</strong></a></li>
+  <li><a href="#django-security-dj-s" id="toc-django-security-dj-s" class="nav-link" data-scroll-target="#django-security-dj-s">22. <strong>Django security (<code>DJ S</code>)</strong></a></li>
+  <li><a href="#pandas-rules-pd-new" id="toc-pandas-rules-pd-new" class="nav-link" data-scroll-target="#pandas-rules-pd-new">23. <strong>Pandas rules (PD)</strong> <em>(new)</em></a></li>
+  <li><a href="#async-rules-async" id="toc-async-rules-async" class="nav-link" data-scroll-target="#async-rules-async">24. <strong>Async rules (<code>ASYNC</code>)</strong></a></li>
+  <li><a href="#typing-rules-typ" id="toc-typing-rules-typ" class="nav-link" data-scroll-target="#typing-rules-typ">25. <strong>Typing rules (<code>TYP</code>)</strong></a></li>
+  <li><a href="#formatter-rules-ruff-formatter" id="toc-formatter-rules-ruff-formatter" class="nav-link" data-scroll-target="#formatter-rules-ruff-formatter">26. <strong>Formatter rules (Ruff Formatter)</strong></a></li>
+  <li><a href="#summary-table" id="toc-summary-table" class="nav-link" data-scroll-target="#summary-table">✔ Summary Table</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.dev/bthek1/MLtools/blob/main/09_02_Ruff_Rule_Categories.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bthek1/MLtools/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Ruff Rule Categories — Purpose &amp; Reason**</h1>
+</div>
+
+<div>
+  <div class="description">
+    Ruff organizes linting rules into <em>families</em> (prefix codes like <code>F</code>, <code>E</code>, <code>W</code>, <code>N</code>, <code>B</code>, etc.). Here is the full high-level list.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Benedict Thekkel </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<section id="pyflakes-f" class="level2">
+<h2 class="anchored" data-anchor-id="pyflakes-f">1. <strong>Pyflakes (<code>F</code>)</strong></h2>
+<p><strong>Purpose:</strong> Catch syntax errors, unused variables, undefined names. <strong>Reason:</strong> Prevents runtime crashes and dead code.</p>
+<p><strong>Examples</strong></p>
+<ul>
+<li><code>F401</code> — unused import</li>
+<li><code>F821</code> — undefined variable</li>
+<li><code>F841</code> — assigned but unused variable</li>
+</ul>
+<hr>
+</section>
+<section id="pycodestyle-e-w" class="level2">
+<h2 class="anchored" data-anchor-id="pycodestyle-e-w">2. <strong>pycodestyle (<code>E</code>, <code>W</code>)</strong></h2>
+<p><strong>Purpose:</strong> Enforce PEP 8 style and whitespace rules. <strong>Reason:</strong> Improves consistency/reliability across teams.</p>
+<p><strong>Examples</strong></p>
+<ul>
+<li><code>E501</code> — line too long</li>
+<li><code>E302</code> — expected 2 blank lines</li>
+<li><code>W291</code> — trailing whitespace</li>
+</ul>
+<hr>
+</section>
+<section id="pep8-naming-n" class="level2">
+<h2 class="anchored" data-anchor-id="pep8-naming-n">3. <strong>Pep8-naming (<code>N</code>)</strong></h2>
+<p><strong>Purpose:</strong> Ensure correct naming conventions. <strong>Reason:</strong> Makes code predictable.</p>
+<p><strong>Examples</strong></p>
+<ul>
+<li><code>N802</code> — function name should be lowercase</li>
+<li><code>N803</code> — argument name should be lowercase</li>
+<li><code>N806</code> — variable in function should be lowercase</li>
+</ul>
+<hr>
+</section>
+<section id="pyupgrade-up" class="level2">
+<h2 class="anchored" data-anchor-id="pyupgrade-up">4. <strong>pyupgrade (<code>UP</code>)</strong></h2>
+<p><strong>Purpose:</strong> Modernize code to newer Python syntax. <strong>Reason:</strong> Removes legacy patterns and ensures performance.</p>
+<p><strong>Examples</strong></p>
+<ul>
+<li>rewrite <code>dict()</code> → <code>{}</code></li>
+<li>rewrite <code>.format()</code> → f-string</li>
+<li>replace old <code>typing.X</code> with built-in types (Python 3.9+)</li>
+</ul>
+<hr>
+</section>
+<section id="flake8-bugbear-b" class="level2">
+<h2 class="anchored" data-anchor-id="flake8-bugbear-b">5. <strong>Flake8-bugbear (<code>B</code>)</strong></h2>
+<p><strong>Purpose:</strong> Prevent common logic bugs. <strong>Reason:</strong> Catches subtle issues that tests often miss.</p>
+<p><strong>Examples</strong></p>
+<ul>
+<li><code>B006</code> — mutable default arguments</li>
+<li><code>B007</code> — loop variable overwritten</li>
+<li><code>B008</code> — function call in default argument</li>
+</ul>
+<hr>
+</section>
+<section id="flake8-comprehensions-c4" class="level2">
+<h2 class="anchored" data-anchor-id="flake8-comprehensions-c4">6. <strong>Flake8-comprehensions (<code>C4</code>)</strong></h2>
+<p><strong>Purpose:</strong> Improve comprehensions. <strong>Reason:</strong> Cleaner, faster, more Pythonic code.</p>
+<p><strong>Examples</strong></p>
+<ul>
+<li><code>C401</code> — unnecessary list/dict/set comprehension</li>
+<li><code>C402</code> — unnecessary dict comprehension</li>
+</ul>
+<hr>
+</section>
+<section id="isort-i" class="level2">
+<h2 class="anchored" data-anchor-id="isort-i">7. <strong>isort (<code>I</code>)</strong></h2>
+<p><strong>Purpose:</strong> Sort imports automatically. <strong>Reason:</strong> Prevents merge conflicts and keeps imports consistent.</p>
+<p>Examples:</p>
+<ul>
+<li><code>I001</code> — imports not sorted</li>
+</ul>
+<hr>
+</section>
+<section id="mccabe-c90" class="level2">
+<h2 class="anchored" data-anchor-id="mccabe-c90">8. <strong>mccabe (<code>C90</code>)</strong></h2>
+<p><strong>Purpose:</strong> Check cyclomatic complexity. <strong>Reason:</strong> Flags overly complex functions → refactor opportunities.</p>
+<p>Example:</p>
+<ul>
+<li><code>C901</code> — function too complex</li>
+</ul>
+<hr>
+</section>
+<section id="pylint-rules-pl" class="level2">
+<h2 class="anchored" data-anchor-id="pylint-rules-pl">9. <strong>Pylint rules (<code>PL</code>)</strong></h2>
+<p><strong>Purpose:</strong> High-level code smell detection. <strong>Reason:</strong> Improves maintainability.</p>
+<p>Examples:</p>
+<ul>
+<li><code>PLR2004</code> — magic values</li>
+<li><code>PLR0913</code> — too many arguments</li>
+</ul>
+<hr>
+</section>
+<section id="bandit-s" class="level2">
+<h2 class="anchored" data-anchor-id="bandit-s">10. <strong>Bandit (<code>S</code>)</strong></h2>
+<p><strong>Purpose:</strong> Security linting. <strong>Reason:</strong> Prevents real-world vulnerabilities.</p>
+<p>Examples:</p>
+<ul>
+<li><code>S102</code> — use of <code>exec</code></li>
+<li><code>S307</code> — suspicious use of <code>eval</code></li>
+<li><code>S501</code> — insecure <code>requests</code> call without verify</li>
+</ul>
+<hr>
+</section>
+<section id="flake8-boolean-trap-fbt" class="level2">
+<h2 class="anchored" data-anchor-id="flake8-boolean-trap-fbt">11. <strong>Flake8-boolean-trap (<code>FBT</code>)</strong></h2>
+<p><strong>Purpose:</strong> Avoid boolean default arguments. <strong>Reason:</strong> They hide poor API design.</p>
+<p>Examples:</p>
+<ul>
+<li><code>FBT001</code> — boolean default in function</li>
+</ul>
+<hr>
+</section>
+<section id="flake8-datetimez-dtz" class="level2">
+<h2 class="anchored" data-anchor-id="flake8-datetimez-dtz">12. <strong>Flake8-datetimez (<code>DTZ</code>)</strong></h2>
+<p><strong>Purpose:</strong> Enforce timezone-aware datetimes. <strong>Reason:</strong> Prevents timezone bugs (critical for Django).</p>
+<p>Examples:</p>
+<ul>
+<li><code>DTZ003</code> — <code>datetime.now()</code> used without timezone</li>
+</ul>
+<hr>
+</section>
+<section id="flake8-erase-era" class="level2">
+<h2 class="anchored" data-anchor-id="flake8-erase-era">13. <strong>Flake8-erase (<code>ERA</code>)</strong></h2>
+<p><strong>Purpose:</strong> Remove commented-out code blocks. <strong>Reason:</strong> Prevents stale code, improves readability.</p>
+<p>Example:</p>
+<ul>
+<li><code>ERA001</code> — commented-out code detected</li>
+</ul>
+<hr>
+</section>
+<section id="flake8-unused-arguments-arg" class="level2">
+<h2 class="anchored" data-anchor-id="flake8-unused-arguments-arg">14. <strong>Flake8-unused-arguments (<code>ARG</code>)</strong></h2>
+<p><strong>Purpose:</strong> Find unused function parameters. <strong>Reason:</strong> Often indicates dead code or refactoring leftovers.</p>
+<p>Example:</p>
+<ul>
+<li><code>ARG001</code> — unused function argument</li>
+</ul>
+<hr>
+</section>
+<section id="flake8-print-t20" class="level2">
+<h2 class="anchored" data-anchor-id="flake8-print-t20">15. <strong>Flake8-print (<code>T20</code>)</strong></h2>
+<p><strong>Purpose:</strong> Detect print statements. <strong>Reason:</strong> Prevents debug prints from leaking into prod.</p>
+<p>Example:</p>
+<ul>
+<li><code>T201</code> — <code>print()</code> found</li>
+</ul>
+<hr>
+</section>
+<section id="flake8-self-slf" class="level2">
+<h2 class="anchored" data-anchor-id="flake8-self-slf">16. <strong>Flake8-self (<code>SLF</code>)</strong></h2>
+<p><strong>Purpose:</strong> Prevent private attribute access. <strong>Reason:</strong> Encourages proper encapsulation.</p>
+<p>Example:</p>
+<ul>
+<li><code>SLF001</code> — accessing <code>_private</code> attribute</li>
+</ul>
+<hr>
+</section>
+<section id="flake8-type-checking-tc" class="level2">
+<h2 class="anchored" data-anchor-id="flake8-type-checking-tc">17. <strong>Flake8-type-checking (<code>TC</code>)</strong></h2>
+<p><strong>Purpose:</strong> Move heavy imports under <code>TYPE_CHECKING</code>. <strong>Reason:</strong> Faster runtime &amp; avoids circular imports.</p>
+<p>Example:</p>
+<ul>
+<li><code>TC001</code> — move import into type-checking block</li>
+</ul>
+<hr>
+</section>
+<section id="flake8-ellipsis-ple" class="level2">
+<h2 class="anchored" data-anchor-id="flake8-ellipsis-ple">18. <strong>Flake8-ellipsis (<code>PLE</code>)</strong></h2>
+<p><strong>Purpose:</strong> Validate correct use of <code>...</code>. <strong>Reason:</strong> Avoids odd “placeholder” errors.</p>
+<p>Example:</p>
+<ul>
+<li>misuse of bare ellipsis</li>
+</ul>
+<hr>
+</section>
+<section id="tryceratops-try" class="level2">
+<h2 class="anchored" data-anchor-id="tryceratops-try">19. <strong>Tryceratops (<code>TRY</code>)</strong></h2>
+<p><strong>Purpose:</strong> Improve error handling. <strong>Reason:</strong> Prevents try/except anti-patterns.</p>
+<p>Examples:</p>
+<ul>
+<li><code>TRY002</code> — raise without from</li>
+<li><code>TRY003</code> — too broad exception clause</li>
+</ul>
+<hr>
+</section>
+<section id="ruff-specific-rules-ruf" class="level2">
+<h2 class="anchored" data-anchor-id="ruff-specific-rules-ruf">20. <strong>Ruff-specific rules (<code>RUF</code>)</strong></h2>
+<p><strong>Purpose:</strong> Ruff’s own logic checks. <strong>Reason:</strong> Improves performance and sanity of code.</p>
+<p>Examples:</p>
+<ul>
+<li><code>RUF100</code> — unused <code>noqa</code> tag</li>
+<li><code>RUF200</code> — ambiguous unicode character</li>
+</ul>
+<hr>
+</section>
+<section id="django-rules-dj" class="level2">
+<h2 class="anchored" data-anchor-id="django-rules-dj">21. <strong>Django rules (<code>DJ</code>)</strong></h2>
+<p><em>(Only if Django plugin enabled)</em> <strong>Purpose:</strong> Enforce Django best practices. <strong>Reason:</strong> Prevent ORM bugs and bad patterns.</p>
+<p>Examples:</p>
+<ul>
+<li>avoiding raw SQL</li>
+<li>warning about <code>null=True</code> on <code>CharField</code></li>
+</ul>
+<hr>
+</section>
+<section id="django-security-dj-s" class="level2">
+<h2 class="anchored" data-anchor-id="django-security-dj-s">22. <strong>Django security (<code>DJ S</code>)</strong></h2>
+<p><strong>Purpose:</strong> Catch common Django security issues. <strong>Reason:</strong> Prevents XSS, CSRF, password handling issues.</p>
+<hr>
+</section>
+<section id="pandas-rules-pd-new" class="level2">
+<h2 class="anchored" data-anchor-id="pandas-rules-pd-new">23. <strong>Pandas rules (PD)</strong> <em>(new)</em></h2>
+<p><strong>Purpose:</strong> Detect inefficient Pandas operations. <strong>Reason:</strong> Prevent memory/time blowouts.</p>
+<p>Examples:</p>
+<ul>
+<li>iterating rows unnecessarily</li>
+<li>chained indexing</li>
+</ul>
+<hr>
+</section>
+<section id="async-rules-async" class="level2">
+<h2 class="anchored" data-anchor-id="async-rules-async">24. <strong>Async rules (<code>ASYNC</code>)</strong></h2>
+<p><strong>Purpose:</strong> Catch misuse of async/await. <strong>Reason:</strong> Ensures correct concurrency behavior.</p>
+<p>Example:</p>
+<ul>
+<li>blocking calls inside async functions</li>
+</ul>
+<hr>
+</section>
+<section id="typing-rules-typ" class="level2">
+<h2 class="anchored" data-anchor-id="typing-rules-typ">25. <strong>Typing rules (<code>TYP</code>)</strong></h2>
+<p><strong>Purpose:</strong> Improve annotations. <strong>Reason:</strong> Cleaner type hints → fewer mypy/pydantic errors.</p>
+<p>Examples:</p>
+<ul>
+<li>unnecessary <code>Optional</code></li>
+<li>improper <code>Union[...]</code> usage</li>
+</ul>
+<hr>
+</section>
+<section id="formatter-rules-ruff-formatter" class="level2">
+<h2 class="anchored" data-anchor-id="formatter-rules-ruff-formatter">26. <strong>Formatter rules (Ruff Formatter)</strong></h2>
+<p><strong>Purpose:</strong> Replace Black. <strong>Reason:</strong> Fastest Python formatter (2–5× faster).</p>
+<p>Examples:</p>
+<ul>
+<li>consistent string quotes</li>
+<li>consistent docstring formatting</li>
+</ul>
+<hr>
+</section>
+<section id="summary-table" class="level2">
+<h2 class="anchored" data-anchor-id="summary-table">✔ Summary Table</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Category</th>
+<th>Prefix</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Pyflakes</td>
+<td><code>F</code></td>
+<td>Syntax / unused checks</td>
+</tr>
+<tr class="even">
+<td>pycodestyle</td>
+<td><code>E/W</code></td>
+<td>PEP 8 rules</td>
+</tr>
+<tr class="odd">
+<td>pep8-naming</td>
+<td><code>N</code></td>
+<td>Naming rules</td>
+</tr>
+<tr class="even">
+<td>pyupgrade</td>
+<td><code>UP</code></td>
+<td>Modern Python</td>
+</tr>
+<tr class="odd">
+<td>Flake8-bugbear</td>
+<td><code>B</code></td>
+<td>Logic bugs</td>
+</tr>
+<tr class="even">
+<td>Flake8-comprehensions</td>
+<td><code>C4</code></td>
+<td>Comprehension improvements</td>
+</tr>
+<tr class="odd">
+<td>isort</td>
+<td><code>I</code></td>
+<td>Import sorting</td>
+</tr>
+<tr class="even">
+<td>mccabe</td>
+<td><code>C90</code></td>
+<td>Complexity</td>
+</tr>
+<tr class="odd">
+<td>Pylint subset</td>
+<td><code>PL</code></td>
+<td>Code smells</td>
+</tr>
+<tr class="even">
+<td>Bandit</td>
+<td><code>S</code></td>
+<td>Security</td>
+</tr>
+<tr class="odd">
+<td>Boolean trap</td>
+<td><code>FBT</code></td>
+<td>Boolean argument API issues</td>
+</tr>
+<tr class="even">
+<td>Datetimez</td>
+<td><code>DTZ</code></td>
+<td>TZ-safe datetimes</td>
+</tr>
+<tr class="odd">
+<td>Erase</td>
+<td><code>ERA</code></td>
+<td>Remove commented code</td>
+</tr>
+<tr class="even">
+<td>Unused arguments</td>
+<td><code>ARG</code></td>
+<td>Unused parameters</td>
+</tr>
+<tr class="odd">
+<td>Print statements</td>
+<td><code>T20</code></td>
+<td>Remove debug prints</td>
+</tr>
+<tr class="even">
+<td>Self rules</td>
+<td><code>SLF</code></td>
+<td>Accessing private attrs</td>
+</tr>
+<tr class="odd">
+<td>Type-checking</td>
+<td><code>TC</code></td>
+<td>Move imports</td>
+</tr>
+<tr class="even">
+<td>Tryceratops</td>
+<td><code>TRY</code></td>
+<td>Better try/except patterns</td>
+</tr>
+<tr class="odd">
+<td>Ruff-specific</td>
+<td><code>RUF</code></td>
+<td>Internal checks</td>
+</tr>
+<tr class="even">
+<td>Django</td>
+<td><code>DJ</code></td>
+<td>Django practices</td>
+</tr>
+<tr class="odd">
+<td>Pandas</td>
+<td><code>PD</code></td>
+<td>Pandas correctness/performance</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p>If you want, I can also generate:</p>
+<p>✅ A recommended <strong>Ruff configuration</strong> for your Django/DRF/pytest codebase ✅ A full <code>ruff.toml</code> template ✅ A diagram showing how rule categories overlap ✅ A priority list (rules to enable first, optional ones, strict mode)</p>
+
+
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/bthek1\.github\.io\/MLtools");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<script src="https://utteranc.es/client.js" repo="quarto-dev/quarto-web" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./01_ruff.html" class="pagination-link" aria-label="Ruff">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Ruff</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./nbdev.html" class="pagination-link" aria-label="Nbdev">
+        <span class="nav-page-text">Nbdev</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link active" href="./index.html" aria-current="page">
+<p>Trademark</p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://github.com/bthek1/B_Blog/issues">
+<p>FAQ</p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://bthek1.github.io/benedicts_blog/Index.html">
+<p>License</p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="./index.html">
+<p>Trademark</p>
+</a>
+  </li>  
+</ul>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.dev/bthek1/MLtools/blob/main/09_02_Ruff_Rule_Categories.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bthek1/MLtools/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/bthek1">
+      <i class="bi bi-github" role="img" aria-label="Github">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/benedict-thekkel/">
+      <i class="bi bi-linkedin" role="img" aria-label="Linkedin">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
