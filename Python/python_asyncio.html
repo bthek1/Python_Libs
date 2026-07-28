@@ -1,0 +1,2096 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Benedict Thekkel">
+<meta name="description" content="Targets Python 3.11+, with version markers where it matters. 3.11 is the meaningful floor: TaskGroup, asyncio.timeout(), and task.uncancel() all landed there and they change how you write correct code.">
+
+<title>asyncio — Complete Reference – MLtools</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../Python/python_multiprocessing.html" rel="prev">
+<link href="../favi.svg" rel="icon" type="image/svg+xml">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-8e6bb74c5449693feffed99ccb3abc15.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-0a0af1a8bd48d52fbe470bacd6643b05.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-8e6bb74c5449693feffed99ccb3abc15.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+<meta property="og:title" content="asyncio — Complete Reference – MLtools">
+<meta property="og:description" content="Targets Python 3.11+, with version markers where it matters. 3.11 is the meaningful floor: TaskGroup, asyncio.timeout(), and task.uncancel() all landed there and they change how you write correct code.">
+<meta property="og:image" content="https://bthek1.github.io/MLtools/Python/Logo.svg">
+<meta property="og:site_name" content="MLtools">
+<meta name="twitter:title" content="asyncio — Complete Reference – MLtools">
+<meta name="twitter:description" content="Targets Python 3.11+, with version markers where it matters. 3.11 is the meaningful floor: TaskGroup, asyncio.timeout(), and task.uncancel() all landed there and they change how you write correct code.">
+<meta name="twitter:image" content="https://bthek1.github.io/MLtools/Python/Logo.svg">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar floating nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../Logo.svg" alt="Quarto logo." class="navbar-logo light-content">
+    <img src="../Logo.svg" alt="Quarto logo." class="navbar-logo dark-content">
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-deep-learning" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Deep Learning</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-deep-learning">    
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/FastAI_course/">
+ <span class="dropdown-text">Fast AI course</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/DL_methods/">
+ <span class="dropdown-text">DL Methods</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/DL_tasks/">
+ <span class="dropdown-text">DL Tasks</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-ml-techniques" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">ML Techniques</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-ml-techniques">    
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/ML_methods/">
+ <span class="dropdown-text">ML Methods</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/TimeSeriesML/">
+ <span class="dropdown-text">Time series</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-web" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Web</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-web">    
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/WEB_doc/">
+ <span class="dropdown-text">Web Development</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/Front_End/">
+ <span class="dropdown-text">Front End</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/Back_End/">
+ <span class="dropdown-text">Back End</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/Docker_Containers/">
+ <span class="dropdown-text">Docker Containers</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-tools" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Tools</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-tools">    
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/Software_Tools/">
+ <span class="dropdown-text">Software Tools</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/Hardware_Tools/">
+ <span class="dropdown-text">Hardware Tools</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/Python_Libs/">
+ <span class="dropdown-text">Python Libraries</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/nbdevAuto/">
+ <span class="dropdown-text">Nbdev Automation</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-business" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Business</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-business">    
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/Business_doc/">
+ <span class="dropdown-text">Business Doc</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/Philosophy_doc/">
+ <span class="dropdown-text">Ideas Doc</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/Finances/">
+ <span class="dropdown-text">Finances</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://bthek1.github.io/Other/">
+ <span class="dropdown-text">Other</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="https://bthek1.github.io/bthek1_blog/"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-help" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Help</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-help">    
+        <li>
+    <a class="dropdown-item" href="https://github.com/bthek1/bthek1_blog/issues"><i class="bi bi-bug" role="img">
+</i> 
+ <span class="dropdown-text">Report a Bug</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://github.com/bthek1/bthek1_blog/issues"><i class="bi bi-chat-right-text" role="img">
+</i> 
+ <span class="dropdown-text">Ask a Question</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://github.com/bthek1/bthek1_blog/issues"><i class="bi bi-question-circle" role="img">
+</i> 
+ <span class="dropdown-text">FAQ</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools tools-wide">
+    <a href="https://github.com/bthek1" title="" class="quarto-navigation-tool px-1" aria-label="Github"><i class="bi bi-github"></i></a>
+    <a href="https://www.linkedin.com/in/benedict-thekkel/" title="" class="quarto-navigation-tool px-1" aria-label="Linkedin"><i class="bi bi-linkedin"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Python/python_class.html">Python</a></li><li class="breadcrumb-item"><a href="../Python/python_asyncio.html">asyncio — Complete Reference</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Python Libraries for ML</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../matplotlib.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Matplotlib</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../numpy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Numpy</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../scipy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Scipy</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../0_pandas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Pandas</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../1_polars.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Polars</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tqdm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">tqdm</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ipywidget.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ipywidget</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../kaggle.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Kaggle</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dask.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dask</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../black.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Black</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../01_ruff.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ruff</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02_ruff_rule_categories.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ruff Rule Categories — Purpose &amp; Reason**</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nbdev.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Nbdev</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../numexpr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Numexpr</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../datetime.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Datetime</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../request&amp;httpx.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Requests and Httpx</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dataclasses.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dataclass</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../rich.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Rich</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../marimo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Marimo</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../0_pytest.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Pytest</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../1_monkey_patch.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Monkey Patch</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../sqlalchemy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SQLAlchemy</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ast.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Abstract Syntax Trees (AST) in Python</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../duckduckgo-search.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">duckduckgo-search</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../beautifulsoup4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">BeautifulSoup4</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Display</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Display/manim.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Manim</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Display/bokeh.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bokeh</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Display/echarts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ECharts in Python — A Complete Guide (pyecharts)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Display/plotly.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Plotly</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Display/graphviz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Graphviz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Display/mermaid.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mermaid</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Display/altair.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Altair</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Environments</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Environments/venv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Venv</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Environments/pipenv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Pipenv</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Environments/poetry.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Poetry</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Environments/conda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Conda</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Environments/direnv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Direnv</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Environments/uv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">uv</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Environments/variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Linux Environment Variables</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Other</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Other/pivottablesjs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Pivot Tables js</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Other/pytube.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Pytube</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Other/mito.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mito</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Other/latexify.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Latexify examples</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Python</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Python/python_class.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Python Class</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Python/python_args.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Python args</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Python/python_logging.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Python Logging</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Python/python_multiprocessing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Python Multiprocessing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Python/python_asyncio.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">asyncio — Complete Reference</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-mental-model" id="toc-the-mental-model" class="nav-link active" data-scroll-target="#the-mental-model">1. The mental model</a></li>
+  <li><a href="#coroutines-tasks-futures" id="toc-coroutines-tasks-futures" class="nav-link" data-scroll-target="#coroutines-tasks-futures">2. Coroutines, tasks, futures</a>
+  <ul class="collapse">
+  <li><a href="#the-fire-and-forget-footgun" id="toc-the-fire-and-forget-footgun" class="nav-link" data-scroll-target="#the-fire-and-forget-footgun">The fire-and-forget footgun</a></li>
+  <li><a href="#eager-tasks-3.12" id="toc-eager-tasks-3.12" class="nav-link" data-scroll-target="#eager-tasks-3.12">Eager tasks (3.12+)</a></li>
+  </ul></li>
+  <li><a href="#running-the-loop" id="toc-running-the-loop" class="nav-link" data-scroll-target="#running-the-loop">3. Running the loop</a></li>
+  <li><a href="#running-in-jupyter-ipython" id="toc-running-in-jupyter-ipython" class="nav-link" data-scroll-target="#running-in-jupyter-ipython">4. Running in Jupyter / IPython</a>
+  <ul class="collapse">
+  <li><a href="#top-level-await-just-works" id="toc-top-level-await-just-works" class="nav-link" data-scroll-target="#top-level-await-just-works">Top-level <code>await</code> just works</a></li>
+  <li><a href="#asyncio.run-fails-this-is-the-error-everyone-hits" id="toc-asyncio.run-fails-this-is-the-error-everyone-hits" class="nav-link" data-scroll-target="#asyncio.run-fails-this-is-the-error-everyone-hits"><code>asyncio.run()</code> fails — this is the error everyone hits</a></li>
+  <li><a href="#structured-concurrency-works-unchanged" id="toc-structured-concurrency-works-unchanged" class="nav-link" data-scroll-target="#structured-concurrency-works-unchanged">Structured concurrency works unchanged</a></li>
+  <li><a href="#background-tasks-survive-between-cells" id="toc-background-tasks-survive-between-cells" class="nav-link" data-scroll-target="#background-tasks-survive-between-cells">Background tasks survive between cells</a></li>
+  <li><a href="#background-exceptions-are-silently-swallowed" id="toc-background-exceptions-are-silently-swallowed" class="nav-link" data-scroll-target="#background-exceptions-are-silently-swallowed">Background exceptions are silently swallowed</a></li>
+  <li><a href="#timers-and-debug-mode" id="toc-timers-and-debug-mode" class="nav-link" data-scroll-target="#timers-and-debug-mode">Timers and debug mode</a></li>
+  <li><a href="#asyncio.run-in-a-thread-the-escape-hatch" id="toc-asyncio.run-in-a-thread-the-escape-hatch" class="nav-link" data-scroll-target="#asyncio.run-in-a-thread-the-escape-hatch"><code>asyncio.run()</code> in a thread — the escape hatch</a></li>
+  <li><a href="#do-not-use-nest_asyncio" id="toc-do-not-use-nest_asyncio" class="nav-link" data-scroll-target="#do-not-use-nest_asyncio">Do not use <code>nest_asyncio</code></a></li>
+  <li><a href="#other-notes" id="toc-other-notes" class="nav-link" data-scroll-target="#other-notes">Other notes</a></li>
+  </ul></li>
+  <li><a href="#structured-concurrency" id="toc-structured-concurrency" class="nav-link" data-scroll-target="#structured-concurrency">5. Structured concurrency</a>
+  <ul class="collapse">
+  <li><a href="#taskgroup-3.11-the-default-choice" id="toc-taskgroup-3.11-the-default-choice" class="nav-link" data-scroll-target="#taskgroup-3.11-the-default-choice">TaskGroup (3.11+) — the default choice</a></li>
+  <li><a href="#gather-legacy-with-a-sharp-edge" id="toc-gather-legacy-with-a-sharp-edge" class="nav-link" data-scroll-target="#gather-legacy-with-a-sharp-edge">gather — legacy, with a sharp edge</a></li>
+  <li><a href="#wait-when-you-need-partial-results" id="toc-wait-when-you-need-partial-results" class="nav-link" data-scroll-target="#wait-when-you-need-partial-results">wait — when you need partial results</a></li>
+  <li><a href="#as_completed-results-in-finishing-order" id="toc-as_completed-results-in-finishing-order" class="nav-link" data-scroll-target="#as_completed-results-in-finishing-order">as_completed — results in finishing order</a></li>
+  </ul></li>
+  <li><a href="#cancellation" id="toc-cancellation" class="nav-link" data-scroll-target="#cancellation">6. Cancellation</a>
+  <ul class="collapse">
+  <li><a href="#mechanics" id="toc-mechanics" class="nav-link" data-scroll-target="#mechanics">Mechanics</a></li>
+  <li><a href="#cancellederror-is-a-baseexception" id="toc-cancellederror-is-a-baseexception" class="nav-link" data-scroll-target="#cancellederror-is-a-baseexception">CancelledError is a BaseException</a></li>
+  <li><a href="#cleanup-during-cancellation" id="toc-cleanup-during-cancellation" class="nav-link" data-scroll-target="#cleanup-during-cancellation">Cleanup during cancellation</a></li>
+  <li><a href="#shield" id="toc-shield" class="nav-link" data-scroll-target="#shield">shield</a></li>
+  <li><a href="#uncancel-3.11" id="toc-uncancel-3.11" class="nav-link" data-scroll-target="#uncancel-3.11">uncancel (3.11+)</a></li>
+  </ul></li>
+  <li><a href="#timeouts" id="toc-timeouts" class="nav-link" data-scroll-target="#timeouts">7. Timeouts</a></li>
+  <li><a href="#synchronization-primitives" id="toc-synchronization-primitives" class="nav-link" data-scroll-target="#synchronization-primitives">8. Synchronization primitives</a></li>
+  <li><a href="#queues" id="toc-queues" class="nav-link" data-scroll-target="#queues">9. Queues</a></li>
+  <li><a href="#never-block-the-loop" id="toc-never-block-the-loop" class="nav-link" data-scroll-target="#never-block-the-loop">10. Never block the loop</a></li>
+  <li><a href="#bridging-sync-and-async" id="toc-bridging-sync-and-async" class="nav-link" data-scroll-target="#bridging-sync-and-async">11. Bridging sync and async</a></li>
+  <li><a href="#async-iteration-context-managers-generators" id="toc-async-iteration-context-managers-generators" class="nav-link" data-scroll-target="#async-iteration-context-managers-generators">12. Async iteration, context managers, generators</a></li>
+  <li><a href="#timers-and-time" id="toc-timers-and-time" class="nav-link" data-scroll-target="#timers-and-time">13. Timers and time</a></li>
+  <li><a href="#networking-and-subprocesses" id="toc-networking-and-subprocesses" class="nav-link" data-scroll-target="#networking-and-subprocesses">14. Networking and subprocesses</a></li>
+  <li><a href="#debugging-and-introspection" id="toc-debugging-and-introspection" class="nav-link" data-scroll-target="#debugging-and-introspection">15. Debugging and introspection</a></li>
+  <li><a href="#testing" id="toc-testing" class="nav-link" data-scroll-target="#testing">16. Testing</a></li>
+  <li><a href="#django-asgi-notes" id="toc-django-asgi-notes" class="nav-link" data-scroll-target="#django-asgi-notes">17. Django / ASGI notes</a></li>
+  <li><a href="#ecosystem" id="toc-ecosystem" class="nav-link" data-scroll-target="#ecosystem">18. Ecosystem</a></li>
+  <li><a href="#consolidated-gotchas" id="toc-consolidated-gotchas" class="nav-link" data-scroll-target="#consolidated-gotchas">19. Consolidated gotchas</a></li>
+  <li><a href="#version-cheat-sheet" id="toc-version-cheat-sheet" class="nav-link" data-scroll-target="#version-cheat-sheet">20. Version cheat sheet</a></li>
+  <li><a href="#if-you-only-remember-five-things" id="toc-if-you-only-remember-five-things" class="nav-link" data-scroll-target="#if-you-only-remember-five-things">21. If you only remember five things</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.dev/bthek1/MLtools/blob/main/Python/05_Python_asyncio.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bthek1/MLtools/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Python/python_class.html">Python</a></li><li class="breadcrumb-item"><a href="../Python/python_asyncio.html">asyncio — Complete Reference</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">asyncio — Complete Reference</h1>
+</div>
+
+<div>
+  <div class="description">
+    Targets Python 3.11+, with version markers where it matters. 3.11 is the meaningful floor: <code>TaskGroup</code>, <code>asyncio.timeout()</code>, and <code>task.uncancel()</code> all landed there and they change how you write correct code.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Benedict Thekkel </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<section id="the-mental-model" class="level2">
+<h2 class="anchored" data-anchor-id="the-mental-model">1. The mental model</h2>
+<p><strong>Single thread, cooperative multitasking.</strong> One OS thread runs an event loop that owns a queue of ready callbacks. Coroutines run until they hit an <code>await</code> that actually suspends, at which point they hand control back to the loop, which picks the next ready thing.</p>
+<p>Three consequences that explain almost every asyncio bug:</p>
+<ol type="1">
+<li><strong><code>await</code> is the only preemption point.</strong> Between two awaits your code is atomic. Nothing else in the loop runs. This is a genuine design tool — you often don’t need a lock, because there’s no interleaving unless you await inside the critical section.</li>
+<li><strong>Blocking blocks everything.</strong> A <code>time.sleep(1)</code> or a CPU-bound loop freezes every task, every timer, every socket read in the process. There is no preemptive scheduler to rescue you.</li>
+<li><strong>Concurrency ≠ parallelism.</strong> asyncio gives you thousands of concurrent IO operations on one core. It gives you zero CPU parallelism. If your bottleneck is CPU, asyncio is the wrong tool.</li>
+</ol>
+<p>The right question when reaching for asyncio: <em>am I waiting on things, or computing things?</em> Waiting → asyncio. Computing → processes.</p>
+<hr>
+</section>
+<section id="coroutines-tasks-futures" class="level2">
+<h2 class="anchored" data-anchor-id="coroutines-tasks-futures">2. Coroutines, tasks, futures</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> fetch(url): ...</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>coro <span class="op">=</span> fetch(url)        <span class="co"># NOT running. Just an object.</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> <span class="cf">await</span> coro      <span class="co"># runs it inline — sequential, no concurrency</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>task <span class="op">=</span> asyncio.create_task(coro)   <span class="co"># schedules it on the loop — concurrent</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The distinction people get wrong: <strong><code>await</code> does not create concurrency.</strong> <code>await a(); await b()</code> is strictly sequential. Concurrency requires scheduling both first.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Coroutine</td>
+<td>The object returned by calling an <code>async def</code>. Inert until awaited or wrapped.</td>
+</tr>
+<tr class="even">
+<td>Task</td>
+<td>A coroutine scheduled on the loop. Subclass of Future. Has a name, can be cancelled, tracks state.</td>
+</tr>
+<tr class="odd">
+<td>Future</td>
+<td>A low-level “result eventually” placeholder. You rarely create these; libraries do.</td>
+</tr>
+</tbody>
+</table>
+<section id="the-fire-and-forget-footgun" class="level3">
+<h3 class="anchored" data-anchor-id="the-fire-and-forget-footgun">The fire-and-forget footgun</h3>
+<p>The event loop holds only <strong>weak</strong> references to tasks. A task with no strong reference elsewhere can be garbage collected mid-execution, and it just… stops. Silently.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># BROKEN — may vanish</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>asyncio.create_task(background_work())</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Correct</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>_background <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> spawn(coro):</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    t <span class="op">=</span> asyncio.create_task(coro)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    _background.add(t)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    t.add_done_callback(_background.discard)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> t</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Better still: use a <code>TaskGroup</code> and don’t fire-and-forget at all.</p>
+</section>
+<section id="eager-tasks-3.12" class="level3">
+<h3 class="anchored" data-anchor-id="eager-tasks-3.12">Eager tasks (3.12+)</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>loop.set_task_factory(asyncio.eager_task_factory)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Runs the coroutine synchronously until its first real suspension instead of deferring to the next loop iteration. Meaningful win when many tasks complete without ever suspending (cache hits). Changes timing semantics subtly, so don’t enable it under a codebase that assumes deferred start.</p>
+<hr>
+</section>
+</section>
+<section id="running-the-loop" class="level2">
+<h2 class="anchored" data-anchor-id="running-the-loop">3. Running the loop</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>asyncio.run(main())                    <span class="co"># creates loop, runs, cancels stragglers, closes</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>asyncio.run(main(), debug<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>asyncio.Runner</code> (3.11+) when you need several <code>run</code> calls sharing one loop:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> asyncio.Runner() <span class="im">as</span> runner:</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    runner.run(setup())</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    runner.run(main())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Don’t use <code>asyncio.get_event_loop()</code>.</strong> As of 3.14 it raises <code>RuntimeError</code> when there’s no current loop rather than silently creating one, and the whole event-loop-policy system is deprecated for removal in 3.16. Inside a coroutine use <code>asyncio.get_running_loop()</code>.</p>
+<p>For uvloop or another implementation, pass a factory rather than installing a policy:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>asyncio.run(main(), loop_factory<span class="op">=</span>uvloop.new_event_loop)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<blockquote class="blockquote">
+<p><strong>In a notebook none of the above applies</strong> — there is already a loop running. See §4.</p>
+</blockquote>
+<hr>
+</section>
+<section id="running-in-jupyter-ipython" class="level2">
+<h2 class="anchored" data-anchor-id="running-in-jupyter-ipython">4. Running in Jupyter / IPython</h2>
+<p>Jupyter (IPython 7.0+, ipykernel 6+) executes every cell inside an already-running asyncio event loop. That single fact explains all the differences. The loop is a plain <code>_UnixSelectorEventLoop</code> — not tornado, not anything exotic — and it <strong>persists across cells</strong> for the life of the kernel.</p>
+<p>Everything below was run in a real kernel; the outputs are actual.</p>
+<section id="top-level-await-just-works" class="level3">
+<h3 class="anchored" data-anchor-id="top-level-await-just-works">Top-level <code>await</code> just works</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> asyncio, time</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> fetch(n):</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> asyncio.sleep(<span class="fl">0.1</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> n <span class="op">*</span> <span class="dv">2</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> <span class="cf">await</span> fetch(<span class="dv">21</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"top-level await -&gt;"</span>, result)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre><code>top-level await -&gt; 42</code></pre>
+<p>No <code>async def main()</code> wrapper, no <code>asyncio.run()</code>. <code>await</code> at cell top level is legal in IPython even though it isn’t in a plain script.</p>
+</section>
+<section id="asyncio.run-fails-this-is-the-error-everyone-hits" class="level3">
+<h3 class="anchored" data-anchor-id="asyncio.run-fails-this-is-the-error-everyone-hits"><code>asyncio.run()</code> fails — this is the error everyone hits</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    asyncio.run(fetch(<span class="dv">1</span>))</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">RuntimeError</span> <span class="im">as</span> e:</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"RuntimeError:"</span>, e)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre><code>RuntimeError: asyncio.run() cannot be called from a running event loop
+RuntimeWarning: coroutine 'fetch' was never awaited</code></pre>
+<p>Note you get <em>two</em> complaints: the nesting refusal, and a never-awaited warning for the coroutine you constructed and dropped. <code>loop.run_until_complete()</code> fails the same way.</p>
+<p><strong>Translation table for adapting any script example in this doc:</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Script</th>
+<th>Notebook cell</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>asyncio.run(main())</code></td>
+<td><code>await main()</code></td>
+</tr>
+<tr class="even">
+<td><code>asyncio.run(main(), debug=True)</code></td>
+<td><code>asyncio.get_running_loop().set_debug(True)</code> then <code>await main()</code></td>
+</tr>
+<tr class="odd">
+<td><code>loop = asyncio.new_event_loop()</code></td>
+<td><code>loop = asyncio.get_running_loop()</code></td>
+</tr>
+<tr class="even">
+<td><code>asyncio.get_event_loop()</code></td>
+<td><code>asyncio.get_running_loop()</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="structured-concurrency-works-unchanged" class="level3">
+<h3 class="anchored" data-anchor-id="structured-concurrency-works-unchanged">Structured concurrency works unchanged</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>t0 <span class="op">=</span> time.perf_counter()</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="cf">with</span> asyncio.TaskGroup() <span class="im">as</span> tg:</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    a <span class="op">=</span> tg.create_task(fetch(<span class="dv">1</span>))</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    b <span class="op">=</span> tg.create_task(fetch(<span class="dv">2</span>))</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a.result(), b.result(), <span class="ss">f"</span><span class="sc">{</span>time<span class="sc">.</span>perf_counter()<span class="op">-</span>t0<span class="sc">:.2f}</span><span class="ss">s"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre><code>2 4 0.10s</code></pre>
+<p>0.10s for two 0.1s tasks — genuinely concurrent. <code>async with</code>, <code>async for</code>, and <code>asyncio.timeout()</code> are all valid at cell top level:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> slow():</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> asyncio.sleep(<span class="fl">0.2</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"ok"</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">async</span> <span class="cf">with</span> asyncio.timeout(<span class="fl">0.05</span>):</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">await</span> slow()</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">TimeoutError</span>:</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"asyncio.timeout works in a cell"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre><code>asyncio.timeout works in a cell</code></pre>
+</section>
+<section id="background-tasks-survive-between-cells" class="level3">
+<h3 class="anchored" data-anchor-id="background-tasks-survive-between-cells">Background tasks survive between cells</h3>
+<p>The genuinely useful notebook-specific behaviour — the loop outlives the cell, so a spawned task keeps running while you type the next one.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- cell 1 ---</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>_bg <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> ticker():</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">await</span> asyncio.sleep(<span class="fl">0.5</span>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> spawn(coro, name<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    t <span class="op">=</span> asyncio.create_task(coro, name<span class="op">=</span>name)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    _bg.add(t)                       <span class="co"># the weak-ref footgun from §2 applies here too</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    t.add_done_callback(_bg.discard)</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> t</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>tick <span class="op">=</span> spawn(ticker(), name<span class="op">=</span><span class="st">"ticker"</span>)</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"spawned:"</span>, tick.get_name(), <span class="st">"done?"</span>, tick.done())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre><code>spawned: ticker done? False</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- cell 2, run later ---</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> asyncio.sleep(<span class="fl">1.2</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"still alive across cells?"</span>, <span class="kw">not</span> tick.done())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre><code>still alive across cells? True</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- cell 3 ---</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>tick.cancel()</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> tick</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> asyncio.CancelledError:</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"cancelled cleanly"</span>)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>([t.get_name() <span class="cf">for</span> t <span class="kw">in</span> asyncio.all_tasks()])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre><code>cancelled cleanly
+['Task-29', 'Task-30', 'Task-28']</code></pre>
+<p>Note that last line: <strong><code>all_tasks()</code> includes the kernel’s own machinery</strong>, not just yours. Those three unnamed tasks are ipykernel’s. Name your tasks or you can’t tell them apart.</p>
+</section>
+<section id="background-exceptions-are-silently-swallowed" class="level3">
+<h3 class="anchored" data-anchor-id="background-exceptions-are-silently-swallowed">Background exceptions are silently swallowed</h3>
+<p>The most dangerous notebook-specific behaviour:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- cell 1 ---</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> boom():</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> asyncio.sleep(<span class="fl">0.1</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"this failed in the background"</span>)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> asyncio.create_task(boom())</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"spawned, cell finished"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre><code>spawned, cell finished</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- cell 2 ---</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> asyncio.sleep(<span class="fl">0.3</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"task state:"</span>, t.done(), t.exception())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre><code>task state: True this failed in the background</code></pre>
+<p>The <code>ValueError</code> never appeared in any cell output. It sat in the task until explicitly retrieved. In a script you’d at least get a “Task exception was never retrieved” message on the console; in a notebook it goes to the kernel log, which you’re probably not watching. <strong>Always check <code>task.exception()</code>, or wrap background work in a try/except that prints.</strong></p>
+</section>
+<section id="timers-and-debug-mode" class="level3">
+<h3 class="anchored" data-anchor-id="timers-and-debug-mode">Timers and debug mode</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>loop <span class="op">=</span> asyncio.get_running_loop()</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"loop:"</span>, <span class="bu">type</span>(loop).<span class="va">__name__</span>, <span class="st">"monotonic now:"</span>, <span class="bu">round</span>(loop.time(), <span class="dv">2</span>))</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>fired <span class="op">=</span> []</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>h <span class="op">=</span> loop.call_later(<span class="fl">0.25</span>, <span class="kw">lambda</span>: fired.append(<span class="st">"settled"</span>))</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> asyncio.sleep(<span class="fl">0.1</span>)</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>h.cancel()                                    <span class="co"># reset the settle timer</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>h <span class="op">=</span> loop.call_later(<span class="fl">0.25</span>, <span class="kw">lambda</span>: fired.append(<span class="st">"settled"</span>))</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> asyncio.sleep(<span class="fl">0.4</span>)</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"fired:"</span>, fired)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre><code>loop: _UnixSelectorEventLoop monotonic now: 45.07
+fired: ['settled']</code></pre>
+<p>Fires exactly once — the cancel-and-restart debounce pattern from §13 behaves identically in a notebook.</p>
+<p>Debug mode has to be set on the existing loop rather than passed to <code>run</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>loop.set_debug(<span class="va">True</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>loop.slow_callback_duration <span class="op">=</span> <span class="fl">0.05</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Caveat: slow-callback warnings go to the <strong>kernel log</strong>, not cell output. Run <code>jupyter lab</code> in a terminal you can see, or you’ll never notice them.</p>
+</section>
+<section id="asyncio.run-in-a-thread-the-escape-hatch" class="level3">
+<h3 class="anchored" data-anchor-id="asyncio.run-in-a-thread-the-escape-hatch"><code>asyncio.run()</code> in a thread — the escape hatch</h3>
+<p>When a library insists on owning the loop (<code>PipelineRunner.run()</code>, anything doing signal handling), give it its own loop in its own thread:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> threading</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> in_thread():</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    asyncio.run(main())</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>threading.Thread(target<span class="op">=</span>in_thread, daemon<span class="op">=</span><span class="va">True</span>).start()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Verified working. The cost is that you now have two loops and objects can’t cross between them — asyncio primitives are not thread-safe, so communicate via <code>loop.call_soon_threadsafe</code> or <code>asyncio.run_coroutine_threadsafe</code> (§11).</p>
+</section>
+<section id="do-not-use-nest_asyncio" class="level3">
+<h3 class="anchored" data-anchor-id="do-not-use-nest_asyncio">Do not use <code>nest_asyncio</code></h3>
+<p>The classic advice was <code>nest_asyncio.apply()</code> to allow nested loops. It’s now a trap: the package is archived and unmaintained, it doesn’t accept the <code>loop_factory</code> parameter added in 3.12, and it’s broken outright on 3.14 (<code>asyncio.current_task()</code> among others), where it degrades into silent HTTP connection-pool failures rather than clean errors. <code>nest-asyncio2</code> is a maintained fork if you’re pinned to a library that requires it, but the correct fix is calling the async API with <code>await</code>.</p>
+</section>
+<section id="other-notes" class="level3">
+<h3 class="anchored" data-anchor-id="other-notes">Other notes</h3>
+<ul>
+<li><code>%autoawait</code> is the IPython magic controlling this; it’s on by default for asyncio. <code>%autoawait trio</code> switches backends.</li>
+<li>A blocking call in a cell freezes the kernel — including your background tasks and the interrupt handler. Same rule as §10, worse consequences.</li>
+<li>Restarting the kernel is the only reliable way to clear orphaned tasks; half-cancelled state accumulates.</li>
+<li>VS Code and Colab notebooks behave identically. They’re all ipykernel.</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="structured-concurrency" class="level2">
+<h2 class="anchored" data-anchor-id="structured-concurrency">5. Structured concurrency</h2>
+<section id="taskgroup-3.11-the-default-choice" class="level3">
+<h3 class="anchored" data-anchor-id="taskgroup-3.11-the-default-choice">TaskGroup (3.11+) — the default choice</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="cf">with</span> asyncio.TaskGroup() <span class="im">as</span> tg:</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    t1 <span class="op">=</span> tg.create_task(fetch(a))</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    t2 <span class="op">=</span> tg.create_task(fetch(b))</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co"># both guaranteed complete here</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(t1.result(), t2.result())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Semantics: if any child raises, remaining children are <strong>cancelled</strong>, the block waits for them to finish unwinding, then raises an <code>ExceptionGroup</code>. If the body raises, same thing. Nothing escapes the block still running.</p>
+<p>Handle with <code>except*</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">async</span> <span class="cf">with</span> asyncio.TaskGroup() <span class="im">as</span> tg:</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>        ...</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span><span class="op">*</span> <span class="pp">ValueError</span> <span class="im">as</span> eg:</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> exc <span class="kw">in</span> eg.exceptions: ...</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span><span class="op">*</span> <span class="pp">ConnectionError</span> <span class="im">as</span> eg:</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>    ...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="gather-legacy-with-a-sharp-edge" class="level3">
+<h3 class="anchored" data-anchor-id="gather-legacy-with-a-sharp-edge">gather — legacy, with a sharp edge</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> <span class="cf">await</span> asyncio.gather(a(), b(), c())</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> <span class="cf">await</span> asyncio.gather(<span class="op">*</span>coros, return_exceptions<span class="op">=</span><span class="va">True</span>)  <span class="co"># exceptions as values</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>The edge:</strong> with <code>return_exceptions=False</code>, the first exception propagates to the awaiter immediately, but <strong>the other tasks are not cancelled</strong>. They keep running, orphaned, and if they later raise you get “Task exception was never retrieved” warnings from a task nobody owns. This is the single biggest reason to prefer <code>TaskGroup</code>.</p>
+<p>(If <code>gather</code> <em>itself</em> is cancelled, it does cancel its children. It’s only the exception path that leaks.)</p>
+<p>Use <code>gather</code> when you genuinely want “run all, collect all outcomes” with <code>return_exceptions=True</code>. Otherwise use <code>TaskGroup</code>.</p>
+</section>
+<section id="wait-when-you-need-partial-results" class="level3">
+<h3 class="anchored" data-anchor-id="wait-when-you-need-partial-results">wait — when you need partial results</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>done, pending <span class="op">=</span> <span class="cf">await</span> asyncio.wait(</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    tasks, return_when<span class="op">=</span>asyncio.FIRST_COMPLETED, timeout<span class="op">=</span><span class="dv">5</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> pending:</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>    t.cancel()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Takes <strong>Tasks, not coroutines</strong> (passing coroutines was removed in 3.11+). Never cancels anything for you — cleaning up <code>pending</code> is your job.</p>
+</section>
+<section id="as_completed-results-in-finishing-order" class="level3">
+<h3 class="anchored" data-anchor-id="as_completed-results-in-finishing-order">as_completed — results in finishing order</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> coro <span class="kw">in</span> asyncio.as_completed(tasks):</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> <span class="cf">await</span> coro</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+</section>
+<section id="cancellation" class="level2">
+<h2 class="anchored" data-anchor-id="cancellation">6. Cancellation</h2>
+<p>The subject worth understanding deeply, because it’s where most real-world async bugs live.</p>
+<section id="mechanics" class="level3">
+<h3 class="anchored" data-anchor-id="mechanics">Mechanics</h3>
+<p><code>task.cancel()</code> <strong>requests</strong> cancellation. It schedules a <code>CancelledError</code> to be thrown into the coroutine at its next suspension point. It does not stop anything immediately, and a task doing CPU work with no awaits cannot be cancelled at all.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>task.cancel()</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> task</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> asyncio.CancelledError:</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Cancellation isn’t complete until you await the task. <code>cancel()</code> returning doesn’t mean it’s done.</p>
+</section>
+<section id="cancellederror-is-a-baseexception" class="level3">
+<h3 class="anchored" data-anchor-id="cancellederror-is-a-baseexception">CancelledError is a BaseException</h3>
+<p>Since 3.8. This is deliberate and load-bearing:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> something()</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span>:      <span class="co"># does NOT catch CancelledError — correct</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    log.exception(<span class="st">"failed"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>If you catch it explicitly, <strong>you must re-raise it</strong> unless you’re deliberately absorbing the cancellation:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> work()</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> asyncio.CancelledError:</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> cleanup()</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span>            <span class="co"># ← non-negotiable</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Swallowing it makes the task un-cancellable, breaks <code>TaskGroup</code> and <code>timeout()</code> nesting, and produces hangs on shutdown that are miserable to debug.</p>
+</section>
+<section id="cleanup-during-cancellation" class="level3">
+<h3 class="anchored" data-anchor-id="cleanup-during-cancellation">Cleanup during cancellation</h3>
+<p><code>finally</code> runs, but awaiting inside it is dangerous — the task is already being cancelled, so a second cancellation can interrupt your cleanup:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> work()</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="cf">finally</span>:</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> asyncio.shield(close_connection())   <span class="co"># survives the cancellation</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Keep cleanup short and non-blocking where you can.</p>
+</section>
+<section id="shield" class="level3">
+<h3 class="anchored" data-anchor-id="shield">shield</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> <span class="cf">await</span> asyncio.shield(critical_write())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Protects the <em>inner</em> operation. If the outer scope is cancelled, <code>shield</code> raises <code>CancelledError</code> to the caller but the inner coroutine <strong>keeps running to completion</strong> — orphaned unless you kept a reference. Common misunderstanding: shield does not make the caller wait.</p>
+</section>
+<section id="uncancel-3.11" class="level3">
+<h3 class="anchored" data-anchor-id="uncancel-3.11">uncancel (3.11+)</h3>
+<p><code>task.uncancel()</code> and <code>task.cancelling()</code> exist so nested cancellation scopes can tell “I was cancelled by my own timeout” from “someone upstream cancelled me.” <code>TaskGroup</code> and <code>asyncio.timeout()</code> use them internally. You mostly won’t call them directly, but knowing why they exist explains why nested timeouts work correctly in 3.11+ and were broken before.</p>
+<hr>
+</section>
+</section>
+<section id="timeouts" class="level2">
+<h2 class="anchored" data-anchor-id="timeouts">7. Timeouts</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="cf">with</span> asyncio.timeout(<span class="dv">5</span>):          <span class="co"># 3.11+, preferred</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> work()</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="cf">with</span> asyncio.timeout_at(loop.time() <span class="op">+</span> <span class="dv">5</span>):</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> work()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Raises <code>TimeoutError</code> (builtin; <code>asyncio.TimeoutError</code> is an alias since 3.11). The context manager form composes and nests correctly, and can be rescheduled mid-flight via the returned handle.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="cf">with</span> asyncio.timeout(<span class="dv">5</span>) <span class="im">as</span> cm:</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> first_part()</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>    cm.reschedule(loop.time() <span class="op">+</span> <span class="dv">10</span>)</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> second_part()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The older <code>asyncio.wait_for(coro, timeout)</code> still works and is fine for a single call.</p>
+<hr>
+</section>
+<section id="synchronization-primitives" class="level2">
+<h2 class="anchored" data-anchor-id="synchronization-primitives">8. Synchronization primitives</h2>
+<p><code>Lock</code>, <code>Event</code>, <code>Condition</code>, <code>Semaphore</code>, <code>BoundedSemaphore</code>, <code>Barrier</code> (3.11+). All asyncio-specific — <strong>not thread-safe</strong>, don’t share them with threads.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>sem <span class="op">=</span> asyncio.Semaphore(<span class="dv">10</span>)          <span class="co"># cap concurrency</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> fetch_one(url):</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">async</span> <span class="cf">with</span> sem:</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="cf">await</span> client.get(url)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>None of them take a timeout argument. Compose with <code>asyncio.timeout()</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="cf">with</span> asyncio.timeout(<span class="dv">1</span>):</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">async</span> <span class="cf">with</span> lock:</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>        ...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>You need a lock less often than you think</strong> — see the atomicity-between-awaits point in §1. You need one only when a critical section contains an <code>await</code>.</p>
+<hr>
+</section>
+<section id="queues" class="level2">
+<h2 class="anchored" data-anchor-id="queues">9. Queues</h2>
+<p><code>Queue</code>, <code>LifoQueue</code>, <code>PriorityQueue</code>. The standard producer/consumer plumbing, and the natural way to build backpressure.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> asyncio.Queue(maxsize<span class="op">=</span><span class="dv">100</span>)     <span class="co"># maxsize is your backpressure</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> producer():</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> q.put(item)              <span class="co"># blocks when full ← this is the point</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> consumer():</span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>        item <span class="op">=</span> <span class="cf">await</span> q.get()</span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a>            <span class="cf">await</span> handle(item)</span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">finally</span>:</span>
+<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a>            q.task_done()</span>
+<span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> q.join()                     <span class="co"># wait until all items processed</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>An unbounded queue is a memory leak waiting for a slow consumer. Set <code>maxsize</code>.</p>
+<p><code>Queue.shutdown()</code> + <code>QueueShutDown</code> (3.13+) gives clean consumer termination without sentinel values.</p>
+<hr>
+</section>
+<section id="never-block-the-loop" class="level2">
+<h2 class="anchored" data-anchor-id="never-block-the-loop">10. Never block the loop</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Blocking IO → thread</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> <span class="cf">await</span> asyncio.to_thread(requests.get, url)          <span class="co"># 3.9+</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="co"># CPU-bound → process</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>loop <span class="op">=</span> asyncio.get_running_loop()</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> ProcessPoolExecutor() <span class="im">as</span> pool:</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> <span class="cf">await</span> loop.run_in_executor(pool, heavy_compute, data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>asyncio.to_thread</code> uses the default thread pool and propagates contextvars. For CPU work it’s useless — the GIL means threads don’t help — so use processes.</p>
+<p><strong>Detecting it:</strong> debug mode logs any callback taking longer than <code>loop.slow_callback_duration</code> (default 0.1s).</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>asyncio.run(main(), debug<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="co"># or PYTHONASYNCIODEBUG=1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Turn this on in development. It finds accidental blocking that you will otherwise ship.</p>
+<p>The usual offenders: <code>time.sleep</code>, <code>requests</code>, <code>psycopg2</code>, <code>boto3</code>, PIL/OpenCV, <code>json.loads</code> on very large payloads, model inference, regex catastrophic backtracking.</p>
+<hr>
+</section>
+<section id="bridging-sync-and-async" class="level2">
+<h2 class="anchored" data-anchor-id="bridging-sync-and-async">11. Bridging sync and async</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Direction</th>
+<th>Tool</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>async → sync function</td>
+<td><code>await asyncio.to_thread(fn, *args)</code></td>
+</tr>
+<tr class="even">
+<td>other thread → loop (callback)</td>
+<td><code>loop.call_soon_threadsafe(fn, *args)</code></td>
+</tr>
+<tr class="odd">
+<td>other thread → loop (coroutine)</td>
+<td><code>asyncio.run_coroutine_threadsafe(coro, loop)</code> → <code>concurrent.futures.Future</code></td>
+</tr>
+<tr class="even">
+<td>sync → async (Django world)</td>
+<td><code>asgiref.sync.async_to_sync(coro_fn)(...)</code></td>
+</tr>
+<tr class="odd">
+<td>async → sync (Django world)</td>
+<td><code>asgiref.sync.sync_to_async(fn)(...)</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>call_soon_threadsafe</code> is the <em>only</em> loop method safe to call from another thread. Calling anything else cross-thread is a race, even when it appears to work.</p>
+<hr>
+</section>
+<section id="async-iteration-context-managers-generators" class="level2">
+<h2 class="anchored" data-anchor-id="async-iteration-context-managers-generators">12. Async iteration, context managers, generators</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Stream:</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__aiter__</span>(<span class="va">self</span>): <span class="cf">return</span> <span class="va">self</span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">async</span> <span class="kw">def</span> <span class="fu">__anext__</span>(<span class="va">self</span>):</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>        chunk <span class="op">=</span> <span class="cf">await</span> <span class="va">self</span>.read()</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> chunk: <span class="cf">raise</span> <span class="pp">StopAsyncIteration</span></span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> chunk</span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="cf">for</span> chunk <span class="kw">in</span> Stream(): ...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> contextlib <span class="im">import</span> asynccontextmanager</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="at">@asynccontextmanager</span></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> connection():</span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>    conn <span class="op">=</span> <span class="cf">await</span> <span class="ex">connect</span>()</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">yield</span> conn</span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">finally</span>:</span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">await</span> conn.close()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Async generator finalization is a real hazard.</strong> If you break out of an <code>async for</code> early, the generator’s <code>finally</code> may not run until GC. Use <code>aclosing</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> contextlib <span class="im">import</span> aclosing</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="cf">with</span> aclosing(agen()) <span class="im">as</span> it:</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">async</span> <span class="cf">for</span> x <span class="kw">in</span> it:</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> done: <span class="cf">break</span>          <span class="co"># finally now runs deterministically</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>asyncio.run()</code> calls <code>loop.shutdown_asyncgens()</code> for you; hand-rolled loops must do it themselves.</p>
+<hr>
+</section>
+<section id="timers-and-time" class="level2">
+<h2 class="anchored" data-anchor-id="timers-and-time">13. Timers and time</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>loop <span class="op">=</span> asyncio.get_running_loop()</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>handle <span class="op">=</span> loop.call_later(<span class="fl">0.25</span>, callback)     <span class="co"># returns TimerHandle</span></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>handle.cancel()</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>loop.call_at(loop.time() <span class="op">+</span> <span class="fl">0.25</span>, callback)</span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>loop.call_soon(callback)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong><code>loop.time()</code> is monotonic</strong>, not wall-clock. It is unaffected by NTP steps and clock changes, which is exactly what you want for timers, and it means you must never compare it against <code>time.time()</code>.</p>
+<p>Two ways to build a settle/debounce timer, and the choice matters:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A: callback-based — no task, cancel is synchronous and immediate</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="va">self</span>._timer <span class="op">=</span> loop.call_later(<span class="fl">0.25</span>, <span class="va">self</span>._on_settle)</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="co"># to reset:</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a><span class="va">self</span>._timer.cancel()</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a><span class="va">self</span>._timer <span class="op">=</span> loop.call_later(<span class="fl">0.25</span>, <span class="va">self</span>._on_settle)</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a><span class="co"># B: task-based — can await, cancel is cooperative</span></span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> _settle():</span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> asyncio.sleep(<span class="fl">0.25</span>)</span>
+<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> <span class="va">self</span>._on_settle()          <span class="co"># can await; A cannot</span></span>
+<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a><span class="va">self</span>._task <span class="kw">and</span> <span class="va">self</span>._task.cancel()</span>
+<span id="cb50-13"><a href="#cb50-13" aria-hidden="true" tabindex="-1"></a><span class="va">self</span>._task <span class="op">=</span> asyncio.create_task(_settle())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Use A when the action is synchronous and you want cancellation to be instantaneous and race-free. Use B when the settle action needs to await. B’s cancellation is <em>requested</em>, not immediate — if <code>_on_settle</code> already started, cancelling won’t unwind it until its next await point, which is a real race in turn-taking code.</p>
+<p><code>asyncio.sleep(0)</code> yields to the loop without delay. Useful for letting queued work drain, and in tests for forcing a scheduling point.</p>
+<hr>
+</section>
+<section id="networking-and-subprocesses" class="level2">
+<h2 class="anchored" data-anchor-id="networking-and-subprocesses">14. Networking and subprocesses</h2>
+<p>High-level streams:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>reader, writer <span class="op">=</span> <span class="cf">await</span> asyncio.open_connection(host, port)</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>writer.write(data)</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> writer.drain()               <span class="co"># respects backpressure — don't skip this</span></span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> <span class="cf">await</span> reader.readline()</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>writer.close()</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> writer.wait_closed()</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>server <span class="op">=</span> <span class="cf">await</span> asyncio.start_server(handle_client, host, port)</span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="cf">with</span> server:</span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> server.serve_forever()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Subprocesses:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>proc <span class="op">=</span> <span class="cf">await</span> asyncio.create_subprocess_exec(</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ffmpeg"</span>, <span class="st">"-i"</span>, <span class="st">"in.wav"</span>, <span class="st">"out.mp3"</span>,</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>    stdout<span class="op">=</span>asyncio.subprocess.PIPE, stderr<span class="op">=</span>asyncio.subprocess.PIPE,</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>stdout, stderr <span class="op">=</span> <span class="cf">await</span> proc.communicate()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Below streams sit <strong>transports and protocols</strong> — the callback-based layer. You’ll only touch it writing a protocol implementation; it’s what aiohttp and the WebRTC libraries are built on.</p>
+<hr>
+</section>
+<section id="debugging-and-introspection" class="level2">
+<h2 class="anchored" data-anchor-id="debugging-and-introspection">15. Debugging and introspection</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>asyncio.current_task()</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>asyncio.all_tasks()                            <span class="co"># everything alive right now</span></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>task <span class="op">=</span> asyncio.create_task(coro, name<span class="op">=</span><span class="st">"settle-timer"</span>)   <span class="co"># always name tasks</span></span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>task.get_coro(), task.get_stack(), task.print_stack()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Naming tasks costs nothing and turns “Task-47 was destroyed but it is pending” into an actionable message.</p>
+<p><strong>3.14 introspection</strong> — genuinely new capability:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb54"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> asyncio ps <span class="op">&lt;</span>pid<span class="op">&gt;</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> asyncio pstree <span class="op">&lt;</span>pid<span class="op">&gt;</span>     <span class="co"># full await call graph of a running process</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Attaches to a live process without stopping it and shows you what’s awaiting what. This is the answer to “production is hung and I don’t know where.” (Needs <code>sudo</code> on macOS.)</p>
+<p>3.14 also rewrote task bookkeeping as a per-thread linked list — 10–20% faster on benchmarks, less memory — and made event loops thread-safe under free-threaded builds, so multiple loops can run in parallel across threads.</p>
+<p><strong>Warnings worth knowing:</strong> - <code>RuntimeWarning: coroutine 'x' was never awaited</code> — you called an async function and dropped the result. - <code>Task was destroyed but it is pending!</code> — the fire-and-forget GC bug from §2, or shutdown without draining. - <code>Task exception was never retrieved</code> — usually the <code>gather</code> leak from §5.</p>
+<hr>
+</section>
+<section id="testing" class="level2">
+<h2 class="anchored" data-anchor-id="testing">16. Testing</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pyproject.toml / pytest.ini</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>[tool.pytest.ini_options]</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>asyncio_mode <span class="op">=</span> <span class="st">"auto"</span>        <span class="co"># every async test just works, no decorator</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Strict mode requires <code>@pytest.mark.asyncio</code> on each test; auto mode doesn’t. Auto is less ceremony and worth it unless you’re mixing sync/async frameworks.</p>
+<p>Standard library alternative: <code>unittest.IsolatedAsyncioTestCase</code>.</p>
+<p><strong>The real problem is time.</strong> Tests that <code>await asyncio.sleep(0.25)</code> to let a timer fire are slow and flaky under CI load. Three options, in order of preference:</p>
+<ol type="1">
+<li><strong>Inject the clock and the delays.</strong> Make the settle interval a constructor parameter; use 5ms in tests. Fastest and most honest.</li>
+<li><strong>Assert on order and causality, not timestamps.</strong> “The cancel happened before the utterance was emitted” is a stable assertion; “it took 250±20ms” is not.</li>
+<li><strong>Actually run in real time.</strong> Slow but tests the genuine scheduling behaviour. Defensible for a small suite where the timing <em>is</em> the thing under test — just know you’re buying wall-clock seconds and some CI flakiness.</li>
+</ol>
+<p><code>await asyncio.sleep(0)</code> to force a scheduling point is the cheapest way to let pending tasks make progress deterministically.</p>
+<p>Mock async functions with <code>unittest.mock.AsyncMock</code> (auto-selected by <code>patch</code> for async targets since 3.8).</p>
+<hr>
+</section>
+<section id="django-asgi-notes" class="level2">
+<h2 class="anchored" data-anchor-id="django-asgi-notes">17. Django / ASGI notes</h2>
+<p>Given a Django + DRF codebase, the practical shape:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> my_view(request):</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>    obj <span class="op">=</span> <span class="cf">await</span> Model.objects.aget(pk<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>    count <span class="op">=</span> <span class="cf">await</span> Model.objects.acount()</span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">async</span> <span class="cf">for</span> row <span class="kw">in</span> Model.objects.<span class="bu">filter</span>(...):</span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>        ...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>ORM async methods are <code>a</code>-prefixed: <code>aget</code>, <code>acreate</code>, <code>aupdate</code>, <code>afirst</code>, <code>acount</code>, <code>aexists</code>, <code>abulk_create</code>.</li>
+<li><strong><code>SynchronousOnlyOperation</code></strong> is what you get calling sync ORM from async context. Wrap with <code>sync_to_async(fn, thread_sensitive=True)</code> — thread-sensitive matters because Django’s connection handling and transactions are thread-local.</li>
+<li>The async ORM is currently an async <em>interface</em> over a sync core; the database driver work still happens in a thread. It removes the <code>SynchronousOnlyOperation</code> friction, not the thread hop.</li>
+<li>Middleware must be marked async-capable or Django inserts sync/async adaptation on every request — measurable overhead.</li>
+<li>Deploy under uvicorn/hypercorn/daphne, not gunicorn-wsgi, or none of this does anything.</li>
+</ul>
+<p>Honest assessment: Django’s async story is good enough for calling external APIs concurrently inside a view. It is not a reason to rewrite a working sync codebase.</p>
+<hr>
+</section>
+<section id="ecosystem" class="level2">
+<h2 class="anchored" data-anchor-id="ecosystem">18. Ecosystem</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Need</th>
+<th>Library</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Faster loop</td>
+<td><code>uvloop</code> (2–4× on socket-heavy workloads)</td>
+</tr>
+<tr class="even">
+<td>HTTP client</td>
+<td><code>httpx</code>, <code>aiohttp</code></td>
+</tr>
+<tr class="odd">
+<td>Postgres</td>
+<td><code>asyncpg</code> (fast) or <code>psycopg</code> 3 (async support, more familiar)</td>
+</tr>
+<tr class="even">
+<td>Redis</td>
+<td><code>redis.asyncio</code></td>
+</tr>
+<tr class="odd">
+<td>Files</td>
+<td><code>aiofiles</code> (a thread-pool wrapper, not real async IO)</td>
+</tr>
+<tr class="even">
+<td>Backend-agnostic async</td>
+<td><code>anyio</code> — write once, run on asyncio or trio</td>
+</tr>
+<tr class="odd">
+<td>Structured concurrency done right</td>
+<td><code>trio</code> — where TaskGroup’s design came from</td>
+</tr>
+</tbody>
+</table>
+<p><code>anyio</code> is worth knowing about even if you stay on asyncio: its cancel scopes and task groups are a cleaner API than the stdlib’s, and it’s what FastAPI uses underneath.</p>
+<hr>
+</section>
+<section id="consolidated-gotchas" class="level2">
+<h2 class="anchored" data-anchor-id="consolidated-gotchas">19. Consolidated gotchas</h2>
+<ol type="1">
+<li><strong><code>await a(); await b()</code> is sequential.</strong> Concurrency requires <code>create_task</code> or a TaskGroup.</li>
+<li><strong>Fire-and-forget tasks get garbage collected.</strong> Hold a reference.</li>
+<li><strong><code>gather</code> doesn’t cancel siblings on exception.</strong> Use <code>TaskGroup</code>.</li>
+<li><strong><code>except Exception</code> doesn’t catch <code>CancelledError</code>.</strong> By design.</li>
+<li><strong>Catching <code>CancelledError</code> without re-raising</strong> breaks cancellation everywhere upstream.</li>
+<li><strong><code>task.cancel()</code> is a request.</strong> Await the task to know it’s finished.</li>
+<li><strong><code>shield</code> doesn’t make the caller wait</strong> for the shielded operation.</li>
+<li><strong>One blocking call freezes the whole process.</strong> Debug mode finds them.</li>
+<li><strong>Unbounded queues are memory leaks.</strong> Set <code>maxsize</code>.</li>
+<li><strong>asyncio primitives are not thread-safe.</strong> Only <code>call_soon_threadsafe</code> crosses threads.</li>
+<li><strong><code>loop.time()</code> is monotonic</strong>, never comparable to <code>time.time()</code>.</li>
+<li><strong>Async generators need <code>aclosing</code></strong> if you break out early.</li>
+<li><strong>CPU-bound work doesn’t belong here.</strong> Threads don’t help; use processes.</li>
+<li><strong><code>get_event_loop()</code> is effectively gone</strong> — <code>RuntimeError</code> in 3.14, policies removed in 3.16.</li>
+<li><strong><code>asyncio.run()</code> fails in notebooks.</strong> Use bare <code>await</code>; don’t reach for <code>nest_asyncio</code>.</li>
+<li><strong>Notebook background-task exceptions are silent.</strong> Check <code>task.exception()</code>.</li>
+</ol>
+<hr>
+</section>
+<section id="version-cheat-sheet" class="level2">
+<h2 class="anchored" data-anchor-id="version-cheat-sheet">20. Version cheat sheet</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Version</th>
+<th>Added</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>3.8</td>
+<td><code>CancelledError</code> becomes <code>BaseException</code>; <code>AsyncMock</code></td>
+</tr>
+<tr class="even">
+<td>3.9</td>
+<td><code>asyncio.to_thread</code></td>
+</tr>
+<tr class="odd">
+<td>3.11</td>
+<td><strong><code>TaskGroup</code></strong>, <strong><code>asyncio.timeout()</code></strong>, <code>Barrier</code>, <code>Runner</code>, <code>task.uncancel()</code>, <code>TimeoutError</code> unified with builtin</td>
+</tr>
+<tr class="even">
+<td>3.12</td>
+<td>Eager task factory; <code>wait</code> no longer accepts coroutines</td>
+</tr>
+<tr class="odd">
+<td>3.13</td>
+<td><code>Queue.shutdown()</code> / <code>QueueShutDown</code></td>
+</tr>
+<tr class="even">
+<td>3.14</td>
+<td><code>get_event_loop()</code> raises without a loop; policies deprecated; child watchers removed; <code>python -m asyncio pstree</code>; 10–20% faster; free-threading support</td>
+</tr>
+<tr class="odd">
+<td>3.16</td>
+<td>(planned) event loop policy system removed</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="if-you-only-remember-five-things" class="level2">
+<h2 class="anchored" data-anchor-id="if-you-only-remember-five-things">21. If you only remember five things</h2>
+<ol type="1">
+<li><code>await</code> is the only place another task can run — that’s both the constraint and the tool.</li>
+<li>Use <code>TaskGroup</code>, not <code>gather</code>.</li>
+<li><code>CancelledError</code> is a <code>BaseException</code>; catch it only to clean up, then re-raise.</li>
+<li>Never block the loop; <code>to_thread</code> for IO, processes for CPU.</li>
+<li>Bound your queues and name your tasks.</li>
+</ol>
+
+
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/bthek1\.github\.io\/MLtools");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<script src="https://utteranc.es/client.js" repo="quarto-dev/quarto-web" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../Python/python_multiprocessing.html" class="pagination-link" aria-label="Python Multiprocessing">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Python Multiprocessing</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link active" href="../index.html" aria-current="page">
+<p>Trademark</p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://github.com/bthek1/bthek1_blog/issues">
+<p>FAQ</p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://bthek1.github.io/bthek1_blog/index.html">
+<p>License</p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="../index.html">
+<p>Trademark</p>
+</a>
+  </li>  
+</ul>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.dev/bthek1/MLtools/blob/main/Python/05_Python_asyncio.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bthek1/MLtools/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/bthek1">
+      <i class="bi bi-github" role="img" aria-label="Github">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/benedict-thekkel/">
+      <i class="bi bi-linkedin" role="img" aria-label="Linkedin">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
