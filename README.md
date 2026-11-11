@@ -110,7 +110,7 @@ roughly the order they appeared.
 
 | Page | Covers |
 |----|----|
-| [Requests and HTTPX](13_Request%26Httpx.ipynb) | The standard HTTP client against the one that adds async and HTTP/2 |
+| [Requests and HTTPX](13_Request_and_Httpx.ipynb) | The standard HTTP client against the one that adds async and HTTP/2 |
 | [BeautifulSoup4](21_beautifulsoup4.ipynb) | Parsing HTML and XML, mostly for scraping |
 | [duckduckgo-search](20_duckduckgo-search.ipynb) | Programmatic search across words, documents, images, news, and maps |
 | [Kaggle](06_Kaggle.ipynb) | Pulling competition and dataset files |
